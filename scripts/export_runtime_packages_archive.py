@@ -33,6 +33,14 @@ def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def read_json(path: Path) -> Any:
+    """Read one JSON file and tolerate UTF-8 BOM produced on Windows.
+    读取一个 JSON 文件，并兼容 Windows 侧生成的 UTF-8 BOM。
+    """
+
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
 def file_sha256(path: Path) -> str:
     """Compute the SHA-256 hash for one file.
     计算单个文件的 SHA-256 哈希。
@@ -93,7 +101,7 @@ def rewrite_runtime_manifest(runtime_root: Path, platform: str) -> dict[str, Any
     """
 
     manifest_path = runtime_root / "resources" / "lua-runtime-manifest.json"
-    payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    payload = read_json(manifest_path)
     source_package_name = payload.get("package_name", f"lua-runtime-{platform}")
     payload["package_name"] = f"lua-runtime-packages-{platform}"
     payload["layout"] = "luaskills-runtime-packages-v1"
@@ -123,7 +131,7 @@ def ensure_runtime_packages_manifest(runtime_root: Path, platform: str) -> None:
     install_manifest_path = packages_root / "install-manifest.json"
     install_payload: dict[str, Any] = {}
     if install_manifest_path.exists():
-        install_payload = json.loads(install_manifest_path.read_text(encoding="utf-8"))
+        install_payload = read_json(install_manifest_path)
     source_payload = install_payload.get("source", {}) if isinstance(install_payload.get("source"), dict) else {}
     bundle_version = str(source_payload.get("bundle_version", "0.0.0-local"))
     series = str(source_payload.get("series", "compat"))
@@ -162,7 +170,7 @@ def rewrite_bundled_libs(runtime_root: Path, removed_paths: list[str]) -> None:
     bundled_path = runtime_root / "resources" / "bundled-libs.json"
     if not bundled_path.exists():
         return
-    payload = json.loads(bundled_path.read_text(encoding="utf-8"))
+    payload = read_json(bundled_path)
     removed_names = {Path(item).name.lower() for item in removed_paths}
     filtered = []
     for record in payload:
@@ -185,7 +193,7 @@ def rewrite_license_manifest(runtime_root: Path, platform: str) -> None:
     """
 
     manifest_path = runtime_root / "licenses" / "manifest.json"
-    payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+    payload = read_json(manifest_path)
     payload["package_name"] = f"lua-runtime-packages-{platform}"
     payload["components"] = [item for item in payload.get("components", []) if item.get("name") != "luaskills"]
     write_json(manifest_path, payload)
