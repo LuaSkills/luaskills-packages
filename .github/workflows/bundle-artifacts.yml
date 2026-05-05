@@ -1,6 +1,9 @@
 name: Export Bundle Artifacts
 
 on:
+  push:
+    tags:
+      - "v*"
   workflow_dispatch:
   release:
     types:
