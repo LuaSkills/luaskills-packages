@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "package_name": "lua-cjson",
+  "rock_name": "lua-cjson",
+  "version": null,
+  "category": "core",
+  "homepage": "https://www.kyne.au/~mark/software/lua-cjson.php",
+  "repository": "https://github.com/openresty/lua-cjson",
+  "help_file": "catalog/help/packages/lua-cjson.json",
+  "summary": {
+    "en": "Fast JSON encoder and decoder for Lua.",
+    "zh": "Lua 的高性能 JSON 编解码库。"
+  },
+  "modules": [
+    {
+      "name": "cjson",
+      "kind": "native",
+      "visibility": "public"
+    },
+    {
+      "name": "cjson.util",
+      "kind": "lua",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [],
+    "args": [],
+    "env": [],
+    "dependencies": [],
+    "depvars": []
+  },
+  "override_rules": {},
+  "artifact_kind": "hybrid",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/openresty/lua-cjson/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/openresty/lua-cjson/master/LICENSE"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

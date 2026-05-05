@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "package_name": "serpent",
+  "title": {
+    "en": "serpent package help",
+    "zh": "serpent 包帮助"
+  },
+  "summary": {
+    "en": "Lua serializer and pretty printer for debug-friendly text output.",
+    "zh": "适合调试文本输出的 Lua 序列化与格式化库。"
+  },
+  "modules": [
+    "serpent"
+  ],
+  "notes": {
+    "en": [
+      "This package is lightweight and does not need any generated platform override in the official bundle."
+    ],
+    "zh": [
+      "这个包较轻量，在官方 bundle 中不需要额外的平台 override。"
+    ]
+  }
+}

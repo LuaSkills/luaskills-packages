@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "package_name": "lrexlib-pcre2",
+  "os": "windows",
+  "strategy": "template",
+  "template_file": "templates/rockspec/windows/lrexlib-pcre2.lua.tpl",
+  "output_name": "lrexlib-pcre2-{{version}}.rockspec",
+  "variables": {
+    "version": "2.9.2-1",
+    "source_url": "git+https://github.com/rrthomas/lrexlib.git",
+    "source_tag": "rel-2-9-2",
+    "semantic_version": "2.9.2"
+  }
+}

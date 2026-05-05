@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "package_name": "lrexlib-pcre2",
+  "title": {
+    "en": "lrexlib-pcre2 package help",
+    "zh": "lrexlib-pcre2 包帮助"
+  },
+  "summary": {
+    "en": "PCRE2-backed regular expression binding for Lua.",
+    "zh": "基于 PCRE2 的 Lua 正则表达式绑定。"
+  },
+  "modules": [
+    "rex_pcre2"
+  ],
+  "notes": {
+    "en": [
+      "The official Windows override maps the dependency to the prebuilt static PCRE2 library name used by LuaSkills."
+    ],
+    "zh": [
+      "官方 Windows override 会把依赖映射到 LuaSkills 当前使用的预编译静态 PCRE2 库名。"
+    ]
+  }
+}

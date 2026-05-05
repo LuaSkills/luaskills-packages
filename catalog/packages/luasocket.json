@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "package_name": "luasocket",
+  "rock_name": "luasocket",
+  "version": null,
+  "category": "network",
+  "homepage": "https://lunarmodules.github.io/luasocket/",
+  "repository": "https://github.com/lunarmodules/luasocket",
+  "help_file": "catalog/help/packages/luasocket.json",
+  "summary": {
+    "en": "TCP, UDP, HTTP, SMTP, FTP, and MIME helpers for Lua.",
+    "zh": "为 Lua 提供 TCP、UDP、HTTP、SMTP、FTP 和 MIME 能力。"
+  },
+  "modules": [
+    {
+      "name": "ltn12",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "mime",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "mime.core",
+      "kind": "native",
+      "visibility": "internal"
+    },
+    {
+      "name": "socket",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "socket.core",
+      "kind": "native",
+      "visibility": "internal"
+    },
+    {
+      "name": "socket.ftp",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "socket.headers",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "socket.http",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "socket.smtp",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "socket.tp",
+      "kind": "lua",
+      "visibility": "internal"
+    },
+    {
+      "name": "socket.url",
+      "kind": "lua",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [],
+    "args": [],
+    "env": [],
+    "dependencies": [],
+    "depvars": []
+  },
+  "override_rules": {},
+  "artifact_kind": "hybrid",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/lunarmodules/luasocket/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/lunarmodules/luasocket/master/LICENSE"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

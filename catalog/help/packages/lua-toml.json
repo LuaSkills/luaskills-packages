@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "package_name": "lua-toml",
+  "title": {
+    "en": "lua-toml package help",
+    "zh": "lua-toml 包帮助"
+  },
+  "summary": {
+    "en": "TOML parsing and serialization helpers for Lua configuration workflows.",
+    "zh": "适合配置工作流的 Lua TOML 解析与序列化辅助。"
+  },
+  "modules": [
+    "toml"
+  ],
+  "notes": {
+    "en": [
+      "This file records package ownership and public module identity only."
+    ],
+    "zh": [
+      "当前文件只记录包归属和公开模块身份。"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+name: Validate Catalog
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate catalog
+        run: python scripts/validate_catalog.py
+
+      - name: Export lua_packages.txt
+        run: python scripts/export_lua_packages_txt.py
+
+      - name: Render rockspec overrides
+        run: python scripts/render_rockspec_overrides.py
+
+      - name: Export platform support matrix
+        run: python scripts/export_platform_support.py
+
+      - name: Export third-party license notices
+        run: python scripts/export_third_party_licenses.py
+
+      - name: Upload generated artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: luaskills-packages-dist
+          path: dist/

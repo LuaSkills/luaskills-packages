@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "package_name": "luafilesystem",
+  "title": {
+    "en": "luafilesystem package help",
+    "zh": "luafilesystem 包帮助"
+  },
+  "summary": {
+    "en": "Portable filesystem inspection and directory traversal support for Lua.",
+    "zh": "用于 Lua 文件系统检查与目录遍历的跨平台支持。"
+  },
+  "modules": [
+    "lfs"
+  ],
+  "notes": {
+    "en": [
+      "Package help is intentionally package-scoped and example-free.",
+      "Detailed function help may be layered by downstream bundles."
+    ],
+    "zh": [
+      "当前帮助以包级为主，不包含示例。",
+      "更细的函数说明可以由下游 bundle 再补。"
+    ]
+  }
+}

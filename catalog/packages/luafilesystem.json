@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "package_name": "luafilesystem",
+  "rock_name": "luafilesystem",
+  "version": null,
+  "category": "core",
+  "homepage": "https://lunarmodules.github.io/luafilesystem/",
+  "repository": "https://github.com/lunarmodules/luafilesystem",
+  "help_file": "catalog/help/packages/luafilesystem.json",
+  "summary": {
+    "en": "Portable filesystem access for Lua.",
+    "zh": "Lua 的跨平台文件系统访问库。"
+  },
+  "modules": [
+    {
+      "name": "lfs",
+      "kind": "native",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [],
+    "args": [],
+    "env": [],
+    "dependencies": [],
+    "depvars": []
+  },
+  "override_rules": {},
+  "artifact_kind": "native",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/lunarmodules/luafilesystem/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/lunarmodules/luafilesystem/master/LICENSE"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

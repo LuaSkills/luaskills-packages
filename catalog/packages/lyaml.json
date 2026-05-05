@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "package_name": "lyaml",
+  "rock_name": "lyaml",
+  "version": "6.2.8-1",
+  "category": "data-formats",
+  "homepage": "https://github.com/gvvaughan/lyaml",
+  "repository": "https://github.com/gvvaughan/lyaml",
+  "help_file": "catalog/help/packages/lyaml.json",
+  "summary": {
+    "en": "libYAML bindings and Lua helpers for reading and writing YAML.",
+    "zh": "用于读写 YAML 的 libYAML 绑定与 Lua 辅助模块。"
+  },
+  "modules": [
+    {
+      "name": "yaml",
+      "kind": "native",
+      "visibility": "public"
+    },
+    {
+      "name": "lyaml",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "lyaml.explicit",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "lyaml.functional",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "lyaml.implicit",
+      "kind": "lua",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [
+      {
+        "os": "windows",
+        "target_ref": "path:dist/luarocks_overrides/windows/lyaml-6.2.8-1.rockspec"
+      }
+    ],
+    "args": [],
+    "env": [
+      {
+        "os": "windows",
+        "name": "LDOC",
+        "value_ref": "tool:uname/true.cmd"
+      }
+    ],
+    "dependencies": [
+      {
+        "name": "libyaml",
+        "os": "windows",
+        "method": "bundled",
+        "url_or_hint": "https://github.com/yaml/libyaml/releases/download/0.2.5/yaml-0.2.5.tar.gz"
+      },
+      {
+        "name": "libyaml",
+        "os": "linux",
+        "method": "bundled",
+        "url_or_hint": "https://github.com/yaml/libyaml/releases/download/0.2.5/yaml-0.2.5.tar.gz"
+      },
+      {
+        "name": "libyaml",
+        "os": "macos",
+        "method": "bundled",
+        "url_or_hint": "https://github.com/yaml/libyaml/releases/download/0.2.5/yaml-0.2.5.tar.gz"
+      }
+    ],
+    "depvars": [
+      {
+        "dep_name": "libyaml",
+        "os": "windows",
+        "var_name": "YAML_DIR",
+        "value_ref": "dep:libyaml"
+      },
+      {
+        "dep_name": "libyaml",
+        "os": "windows",
+        "var_name": "YAML_LIBDIR",
+        "value_ref": "dep:libyaml/lib"
+      },
+      {
+        "dep_name": "libyaml",
+        "os": "windows",
+        "var_name": "YAML_INCDIR",
+        "value_ref": "dep:libyaml/include"
+      },
+      {
+        "dep_name": "libyaml",
+        "os": "linux",
+        "var_name": "YAML_DIR",
+        "value_ref": "dep:libyaml"
+      },
+      {
+        "dep_name": "libyaml",
+        "os": "linux",
+        "var_name": "YAML_LIBDIR",
+        "value_ref": "dep:libyaml/lib"
+      },
+      {
+        "dep_name": "libyaml",
+        "os": "linux",
+        "var_name": "YAML_INCDIR",
+        "value_ref": "dep:libyaml/include"
+      },
+      {
+        "dep_name": "libyaml",
+        "os": "macos",
+        "var_name": "YAML_DIR",
+        "value_ref": "dep:libyaml"
+      },
+      {
+        "dep_name": "libyaml",
+        "os": "macos",
+        "var_name": "YAML_LIBDIR",
+        "value_ref": "dep:libyaml/lib"
+      },
+      {
+        "dep_name": "libyaml",
+        "os": "macos",
+        "var_name": "YAML_INCDIR",
+        "value_ref": "dep:libyaml/include"
+      }
+    ]
+  },
+  "override_rules": {
+    "windows": "catalog/overrides/windows/lyaml.json"
+  },
+  "artifact_kind": "hybrid",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/gvvaughan/lyaml/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/gvvaughan/lyaml/master/LICENSE"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "generated-override"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

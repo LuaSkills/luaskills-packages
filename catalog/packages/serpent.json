@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "package_name": "serpent",
+  "rock_name": "serpent",
+  "version": null,
+  "category": "utility",
+  "homepage": "https://github.com/pkulchenko/serpent",
+  "repository": "https://github.com/pkulchenko/serpent",
+  "help_file": "catalog/help/packages/serpent.json",
+  "summary": {
+    "en": "Human-readable Lua serializer and pretty printer.",
+    "zh": "可读性较高的 Lua 序列化与格式化输出库。"
+  },
+  "modules": [
+    {
+      "name": "serpent",
+      "kind": "lua",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [],
+    "args": [],
+    "env": [],
+    "dependencies": [],
+    "depvars": []
+  },
+  "override_rules": {},
+  "artifact_kind": "lua-only",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/pkulchenko/serpent/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/pkulchenko/serpent/master/LICENSE"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    }
+  }
+}

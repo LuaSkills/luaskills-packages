@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "package_name": "lua-curl",
+  "os": "windows",
+  "strategy": "template",
+  "template_file": "templates/rockspec/windows/lua-curl.lua.tpl",
+  "output_name": "lua-curl-{{version}}.rockspec",
+  "variables": {
+    "version": "0.3.13-1",
+    "source_url": "https://github.com/Lua-cURL/Lua-cURLv3/archive/v0.3.13.zip",
+    "source_dir": "Lua-cURLv3-0.3.13"
+  }
+}

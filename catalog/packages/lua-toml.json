@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "package_name": "lua-toml",
+  "rock_name": "lua-toml",
+  "version": null,
+  "category": "data-formats",
+  "help_file": "catalog/help/packages/lua-toml.json",
+  "summary": {
+    "en": "TOML parser and serializer for Lua.",
+    "zh": "Lua 的 TOML 解析与序列化库。"
+  },
+  "modules": [
+    {
+      "name": "toml",
+      "kind": "lua",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [],
+    "args": [],
+    "env": [],
+    "dependencies": [],
+    "depvars": []
+  },
+  "override_rules": {},
+  "artifact_kind": "lua-only",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/jonstoler/lua-toml/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/jonstoler/lua-toml/master/LICENSE"
+  },
+  "homepage": "https://github.com/jonstoler/lua-toml",
+  "repository": "https://github.com/jonstoler/lua-toml",
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    }
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "package_name": "luasec",
+  "rock_name": "luasec",
+  "version": "1.3.2-1",
+  "category": "network",
+  "homepage": "https://github.com/brunoos/luasec/wiki",
+  "repository": "https://github.com/brunoos/luasec",
+  "help_file": "catalog/help/packages/luasec.json",
+  "summary": {
+    "en": "TLS and SSL bindings layered on top of LuaSocket.",
+    "zh": "构建在 LuaSocket 之上的 TLS / SSL 绑定。"
+  },
+  "modules": [
+    {
+      "name": "ssl",
+      "kind": "hybrid",
+      "visibility": "public"
+    },
+    {
+      "name": "ssl.https",
+      "kind": "lua",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [
+      {
+        "os": "windows",
+        "target_ref": "path:dist/luarocks_overrides/windows/luasec-1.3.2-1.rockspec"
+      }
+    ],
+    "args": [],
+    "env": [],
+    "dependencies": [
+      {
+        "name": "openssl",
+        "os": "windows",
+        "method": "vcpkg",
+        "url_or_hint": "https://github.com/openssl/openssl/releases/download/openssl-3.4.1/openssl-3.4.1.tar.gz"
+      },
+      {
+        "name": "openssl",
+        "os": "linux",
+        "method": "bundled",
+        "url_or_hint": "https://github.com/openssl/openssl/releases/download/openssl-3.4.1/openssl-3.4.1.tar.gz"
+      },
+      {
+        "name": "openssl",
+        "os": "macos",
+        "method": "bundled",
+        "url_or_hint": "https://github.com/openssl/openssl/releases/download/openssl-3.4.1/openssl-3.4.1.tar.gz"
+      }
+    ],
+    "depvars": [
+      {
+        "dep_name": "openssl",
+        "os": "linux",
+        "var_name": "OPENSSL_DIR",
+        "value_ref": "dep:openssl"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "linux",
+        "var_name": "OPENSSL_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "linux",
+        "var_name": "OPENSSL_INCDIR",
+        "value_ref": "dep:openssl/include"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "linux",
+        "var_name": "CRYPTO_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "linux",
+        "var_name": "CRYPTO_INCDIR",
+        "value_ref": "dep:openssl/include"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "macos",
+        "var_name": "OPENSSL_DIR",
+        "value_ref": "dep:openssl"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "macos",
+        "var_name": "OPENSSL_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "macos",
+        "var_name": "OPENSSL_INCDIR",
+        "value_ref": "dep:openssl/include"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "macos",
+        "var_name": "CRYPTO_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "macos",
+        "var_name": "CRYPTO_INCDIR",
+        "value_ref": "dep:openssl/include"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "windows",
+        "var_name": "OPENSSL_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "windows",
+        "var_name": "OPENSSL_INCDIR",
+        "value_ref": "dep:openssl/include"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "windows",
+        "var_name": "OPENSSL_BINDIR",
+        "value_ref": "dep:openssl/bin"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "windows",
+        "var_name": "CRYPTO_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "windows",
+        "var_name": "CRYPTO_INCDIR",
+        "value_ref": "dep:openssl/include"
+      }
+    ]
+  },
+  "override_rules": {
+    "windows": "catalog/overrides/windows/luasec.json"
+  },
+  "artifact_kind": "hybrid",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/lunarmodules/luasec/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/lunarmodules/luasec/master/LICENSE"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "generated-override"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

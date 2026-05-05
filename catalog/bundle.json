@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "bundle_id": "official",
+  "bundle_version": "0.1.0",
+  "bundle_name": {
+    "en": "LuaSkills official packages bundle",
+    "zh": "LuaSkills 官方包集合"
+  },
+  "package_directory": "catalog/packages",
+  "help_directory": "catalog/help/packages",
+  "override_directory": "catalog/overrides",
+  "generated": {
+    "lua_packages_txt": "dist/lua_packages.txt",
+    "luarocks_override_directory": "dist/luarocks_overrides",
+    "platform_support_json": "dist/platform-support.json",
+    "platform_support_markdown": "dist/platform-support.md",
+    "third_party_licenses_json": "dist/THIRD_PARTY_LICENSES.json",
+    "third_party_notices_markdown": "dist/THIRD_PARTY_NOTICES.md",
+    "license_directory": "dist/licenses"
+  },
+  "category_order": [
+    "core",
+    "network",
+    "regex",
+    "crypto",
+    "data-formats",
+    "utility",
+    "compression"
+  ],
+  "package_order": [
+    "lua-cjson",
+    "luafilesystem",
+    "luasocket",
+    "luasec",
+    "lua-curl",
+    "lrexlib-pcre2",
+    "luaossl",
+    "lyaml",
+    "lua-toml",
+    "serpent",
+    "lua-zlib"
+  ],
+  "notes": {
+    "en": "This bundle tracks the official Lua package set shipped by LuaSkills. Host-specific additions should be expressed as overlays instead of mutating the official bundle in-place.",
+    "zh": "这个 bundle 表达 LuaSkills 官方发布包集合。宿主自己的扩展应通过 overlay 表达，而不是直接改写官方 bundle。"
+  },
+  "supported_targets": [
+    {
+      "id": "windows-x64",
+      "os": "windows",
+      "arch": "x64",
+      "display_name": "Windows x64"
+    },
+    {
+      "id": "linux-x64",
+      "os": "linux",
+      "arch": "x64",
+      "display_name": "Linux x64"
+    },
+    {
+      "id": "linux-arm64",
+      "os": "linux",
+      "arch": "arm64",
+      "display_name": "Linux ARM64"
+    },
+    {
+      "id": "macos-x64",
+      "os": "macos",
+      "arch": "x64",
+      "display_name": "macOS x64"
+    },
+    {
+      "id": "macos-arm64",
+      "os": "macos",
+      "arch": "arm64",
+      "display_name": "macOS ARM64"
+    }
+  ]
+}

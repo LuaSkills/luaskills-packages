@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "package_name": "luaossl",
+  "rock_name": "luaossl",
+  "version": "20250929-0",
+  "category": "crypto",
+  "homepage": "http://25thandclement.com/~william/projects/luaossl.html",
+  "repository": "https://github.com/wahern/luaossl",
+  "help_file": "catalog/help/packages/luaossl.json",
+  "summary": {
+    "en": "Comprehensive OpenSSL bindings for Lua, including X509, SSL, digest, and key helpers.",
+    "zh": "Lua 的完整 OpenSSL 绑定，覆盖 X509、SSL、摘要与密钥能力。"
+  },
+  "modules": [
+    {
+      "name": "openssl",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.auxlib",
+      "kind": "lua",
+      "visibility": "internal"
+    },
+    {
+      "name": "openssl.bignum",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.cipher",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.des",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.digest",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.hmac",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.kdf",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.ocsp.basic",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.ocsp.response",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.pkcs12",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.pkey",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.pubkey",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.rand",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.ssl",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.ssl.context",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.x509",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.x509.altname",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.x509.chain",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.x509.crl",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.x509.csr",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.x509.extension",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.x509.name",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.x509.store",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "openssl.x509.verify_param",
+      "kind": "lua",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [
+      {
+        "os": "windows",
+        "target_ref": "path:dist/luarocks_overrides/windows/luaossl-20250929-0.rockspec"
+      }
+    ],
+    "args": [],
+    "env": [],
+    "dependencies": [
+      {
+        "name": "openssl",
+        "os": "windows",
+        "method": "vcpkg",
+        "url_or_hint": "https://github.com/openssl/openssl/releases/download/openssl-3.4.1/openssl-3.4.1.tar.gz"
+      },
+      {
+        "name": "openssl",
+        "os": "linux",
+        "method": "bundled",
+        "url_or_hint": "https://github.com/openssl/openssl/releases/download/openssl-3.4.1/openssl-3.4.1.tar.gz"
+      },
+      {
+        "name": "openssl",
+        "os": "macos",
+        "method": "bundled",
+        "url_or_hint": "https://github.com/openssl/openssl/releases/download/openssl-3.4.1/openssl-3.4.1.tar.gz"
+      }
+    ],
+    "depvars": [
+      {
+        "dep_name": "openssl",
+        "os": "linux",
+        "var_name": "OPENSSL_DIR",
+        "value_ref": "dep:openssl"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "linux",
+        "var_name": "OPENSSL_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "linux",
+        "var_name": "OPENSSL_INCDIR",
+        "value_ref": "dep:openssl/include"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "linux",
+        "var_name": "CRYPTO_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "linux",
+        "var_name": "CRYPTO_INCDIR",
+        "value_ref": "dep:openssl/include"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "macos",
+        "var_name": "OPENSSL_DIR",
+        "value_ref": "dep:openssl"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "macos",
+        "var_name": "OPENSSL_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "macos",
+        "var_name": "OPENSSL_INCDIR",
+        "value_ref": "dep:openssl/include"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "macos",
+        "var_name": "CRYPTO_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "macos",
+        "var_name": "CRYPTO_INCDIR",
+        "value_ref": "dep:openssl/include"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "windows",
+        "var_name": "OPENSSL_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "windows",
+        "var_name": "OPENSSL_INCDIR",
+        "value_ref": "dep:openssl/include"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "windows",
+        "var_name": "CRYPTO_LIBDIR",
+        "value_ref": "dep:openssl/lib"
+      },
+      {
+        "dep_name": "openssl",
+        "os": "windows",
+        "var_name": "CRYPTO_INCDIR",
+        "value_ref": "dep:openssl/include"
+      }
+    ]
+  },
+  "override_rules": {
+    "windows": "catalog/overrides/windows/luaossl.json"
+  },
+  "artifact_kind": "hybrid",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT/X11 License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/wahern/luaossl/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/wahern/luaossl/master/LICENSE"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "generated-override"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

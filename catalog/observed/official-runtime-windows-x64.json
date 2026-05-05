@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "source_name": "official-runtime-windows-x64",
+  "lua_packages_dir": "D:\\projects\\vulcan-luaskills\\target\\ts-sdk-lua-runtime-actual\\lua_packages",
+  "modules": [
+    {
+      "name": "_openssl",
+      "kind": "native",
+      "origin_path": "lib/lua/_openssl.dll"
+    },
+    {
+      "name": "cURL",
+      "kind": "lua",
+      "origin_path": "share/lua/cURL.lua"
+    },
+    {
+      "name": "cURL.impl.cURL",
+      "kind": "lua",
+      "origin_path": "share/lua/cURL/impl/cURL.lua"
+    },
+    {
+      "name": "cURL.safe",
+      "kind": "lua",
+      "origin_path": "share/lua/cURL/safe.lua"
+    },
+    {
+      "name": "cURL.utils",
+      "kind": "lua",
+      "origin_path": "share/lua/cURL/utils.lua"
+    },
+    {
+      "name": "cjson",
+      "kind": "native",
+      "origin_path": "lib/lua/cjson.dll"
+    },
+    {
+      "name": "cjson.util",
+      "kind": "lua",
+      "origin_path": "share/lua/cjson/util.lua"
+    },
+    {
+      "name": "json2lua",
+      "kind": "lua",
+      "origin_path": "share/lua/json2lua.lua"
+    },
+    {
+      "name": "lcurl",
+      "kind": "native",
+      "origin_path": "lib/lua/lcurl.dll"
+    },
+    {
+      "name": "lfs",
+      "kind": "native",
+      "origin_path": "lib/lua/lfs.dll"
+    },
+    {
+      "name": "ltn12",
+      "kind": "lua",
+      "origin_path": "share/lua/ltn12.lua"
+    },
+    {
+      "name": "lua2json",
+      "kind": "lua",
+      "origin_path": "share/lua/lua2json.lua"
+    },
+    {
+      "name": "lyaml",
+      "kind": "lua",
+      "origin_path": "share/lua/lyaml/init.lua"
+    },
+    {
+      "name": "lyaml.explicit",
+      "kind": "lua",
+      "origin_path": "share/lua/lyaml/explicit.lua"
+    },
+    {
+      "name": "lyaml.functional",
+      "kind": "lua",
+      "origin_path": "share/lua/lyaml/functional.lua"
+    },
+    {
+      "name": "lyaml.implicit",
+      "kind": "lua",
+      "origin_path": "share/lua/lyaml/implicit.lua"
+    },
+    {
+      "name": "mime",
+      "kind": "lua",
+      "origin_path": "share/lua/mime.lua"
+    },
+    {
+      "name": "mime.core",
+      "kind": "native",
+      "origin_path": "lib/lua/mime/core.dll"
+    },
+    {
+      "name": "openssl",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl.lua"
+    },
+    {
+      "name": "openssl.auxlib",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/auxlib.lua"
+    },
+    {
+      "name": "openssl.bignum",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/bignum.lua"
+    },
+    {
+      "name": "openssl.cipher",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/cipher.lua"
+    },
+    {
+      "name": "openssl.des",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/des.lua"
+    },
+    {
+      "name": "openssl.digest",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/digest.lua"
+    },
+    {
+      "name": "openssl.hmac",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/hmac.lua"
+    },
+    {
+      "name": "openssl.kdf",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/kdf.lua"
+    },
+    {
+      "name": "openssl.ocsp.basic",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/ocsp/basic.lua"
+    },
+    {
+      "name": "openssl.ocsp.response",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/ocsp/response.lua"
+    },
+    {
+      "name": "openssl.pkcs12",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/pkcs12.lua"
+    },
+    {
+      "name": "openssl.pkey",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/pkey.lua"
+    },
+    {
+      "name": "openssl.pubkey",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/pubkey.lua"
+    },
+    {
+      "name": "openssl.rand",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/rand.lua"
+    },
+    {
+      "name": "openssl.ssl",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/ssl.lua"
+    },
+    {
+      "name": "openssl.ssl.context",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/ssl/context.lua"
+    },
+    {
+      "name": "openssl.x509",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/x509.lua"
+    },
+    {
+      "name": "openssl.x509.altname",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/x509/altname.lua"
+    },
+    {
+      "name": "openssl.x509.chain",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/x509/chain.lua"
+    },
+    {
+      "name": "openssl.x509.crl",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/x509/crl.lua"
+    },
+    {
+      "name": "openssl.x509.csr",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/x509/csr.lua"
+    },
+    {
+      "name": "openssl.x509.extension",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/x509/extension.lua"
+    },
+    {
+      "name": "openssl.x509.name",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/x509/name.lua"
+    },
+    {
+      "name": "openssl.x509.store",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/x509/store.lua"
+    },
+    {
+      "name": "openssl.x509.verify_param",
+      "kind": "lua",
+      "origin_path": "share/lua/openssl/x509/verify_param.lua"
+    },
+    {
+      "name": "rex_pcre2",
+      "kind": "native",
+      "origin_path": "lib/lua/rex_pcre2.dll"
+    },
+    {
+      "name": "serpent",
+      "kind": "lua",
+      "origin_path": "share/lua/serpent.lua"
+    },
+    {
+      "name": "socket",
+      "kind": "lua",
+      "origin_path": "share/lua/socket.lua"
+    },
+    {
+      "name": "socket.core",
+      "kind": "native",
+      "origin_path": "lib/lua/socket/core.dll"
+    },
+    {
+      "name": "socket.ftp",
+      "kind": "lua",
+      "origin_path": "share/lua/socket/ftp.lua"
+    },
+    {
+      "name": "socket.headers",
+      "kind": "lua",
+      "origin_path": "share/lua/socket/headers.lua"
+    },
+    {
+      "name": "socket.http",
+      "kind": "lua",
+      "origin_path": "share/lua/socket/http.lua"
+    },
+    {
+      "name": "socket.smtp",
+      "kind": "lua",
+      "origin_path": "share/lua/socket/smtp.lua"
+    },
+    {
+      "name": "socket.tp",
+      "kind": "lua",
+      "origin_path": "share/lua/socket/tp.lua"
+    },
+    {
+      "name": "socket.url",
+      "kind": "lua",
+      "origin_path": "share/lua/socket/url.lua"
+    },
+    {
+      "name": "ssl",
+      "kind": "lua",
+      "origin_path": "share/lua/ssl.lua"
+    },
+    {
+      "name": "ssl",
+      "kind": "native",
+      "origin_path": "lib/lua/ssl.dll"
+    },
+    {
+      "name": "ssl.https",
+      "kind": "lua",
+      "origin_path": "share/lua/ssl/https.lua"
+    },
+    {
+      "name": "toml",
+      "kind": "lua",
+      "origin_path": "share/lua/toml.lua"
+    },
+    {
+      "name": "yaml",
+      "kind": "native",
+      "origin_path": "lib/lua/yaml.dll"
+    },
+    {
+      "name": "zlib",
+      "kind": "native",
+      "origin_path": "lib/lua/zlib.dll"
+    }
+  ]
+}

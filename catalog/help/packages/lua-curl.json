@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "package_name": "lua-curl",
+  "title": {
+    "en": "lua-curl package help",
+    "zh": "lua-curl 包帮助"
+  },
+  "summary": {
+    "en": "libcurl bindings with both high-level Lua helpers and low-level native bindings.",
+    "zh": "同时包含高层 Lua 辅助与低层 native 绑定的 libcurl 包。"
+  },
+  "modules": [
+    "cURL",
+    "cURL.safe",
+    "cURL.utils",
+    "cURL.impl.cURL",
+    "lcurl"
+  ],
+  "notes": {
+    "en": [
+      "Package-level metadata helps avoid treating every helper file as a standalone library.",
+      "The official Windows override is generated from a parameterized template."
+    ],
+    "zh": [
+      "包级元数据可以避免把每个辅助文件都误判成独立库。",
+      "官方 Windows override 由参数化模板生成。"
+    ]
+  }
+}

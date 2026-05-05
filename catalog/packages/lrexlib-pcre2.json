@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "package_name": "lrexlib-pcre2",
+  "rock_name": "lrexlib-pcre2",
+  "version": "2.9.2-1",
+  "category": "regex",
+  "homepage": "https://github.com/rrthomas/lrexlib",
+  "repository": "https://github.com/rrthomas/lrexlib",
+  "help_file": "catalog/help/packages/lrexlib-pcre2.json",
+  "summary": {
+    "en": "PCRE2 flavor of the lrexlib regular expression bindings.",
+    "zh": "lrexlib 的 PCRE2 正则表达式绑定版本。"
+  },
+  "modules": [
+    {
+      "name": "rex_pcre2",
+      "kind": "native",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [
+      {
+        "os": "windows",
+        "target_ref": "path:dist/luarocks_overrides/windows/lrexlib-pcre2-2.9.2-1.rockspec"
+      }
+    ],
+    "args": [],
+    "env": [],
+    "dependencies": [
+      {
+        "name": "pcre2",
+        "os": "windows",
+        "method": "vcpkg",
+        "url_or_hint": "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.gz"
+      },
+      {
+        "name": "pcre2",
+        "os": "linux",
+        "method": "cmake",
+        "url_or_hint": "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.gz"
+      },
+      {
+        "name": "pcre2",
+        "os": "macos",
+        "method": "cmake",
+        "url_or_hint": "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.gz"
+      }
+    ],
+    "depvars": [
+      {
+        "dep_name": "pcre2",
+        "os": "windows",
+        "var_name": "PCRE2_LIBDIR",
+        "value_ref": "dep:pcre2/lib"
+      },
+      {
+        "dep_name": "pcre2",
+        "os": "windows",
+        "var_name": "PCRE2_INCDIR",
+        "value_ref": "dep:pcre2/include"
+      },
+      {
+        "dep_name": "pcre2",
+        "os": "linux",
+        "var_name": "PCRE2_LIBDIR",
+        "value_ref": "dep:pcre2/lib"
+      },
+      {
+        "dep_name": "pcre2",
+        "os": "linux",
+        "var_name": "PCRE2_INCDIR",
+        "value_ref": "dep:pcre2/include"
+      },
+      {
+        "dep_name": "pcre2",
+        "os": "macos",
+        "var_name": "PCRE2_LIBDIR",
+        "value_ref": "dep:pcre2/lib"
+      },
+      {
+        "dep_name": "pcre2",
+        "os": "macos",
+        "var_name": "PCRE2_INCDIR",
+        "value_ref": "dep:pcre2/include"
+      }
+    ]
+  },
+  "override_rules": {
+    "windows": "catalog/overrides/windows/lrexlib-pcre2.json"
+  },
+  "artifact_kind": "hybrid",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT/X11 License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/rrthomas/lrexlib/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/rrthomas/lrexlib/master/LICENSE"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "generated-override"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

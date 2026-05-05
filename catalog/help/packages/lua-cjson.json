@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "package_name": "lua-cjson",
+  "title": {
+    "en": "lua-cjson package help",
+    "zh": "lua-cjson 包帮助"
+  },
+  "summary": {
+    "en": "Fast JSON encoding and decoding for Lua workloads that need stable structured text exchange.",
+    "zh": "适合结构化文本交换场景的高性能 Lua JSON 编解码库。"
+  },
+  "modules": [
+    "cjson",
+    "cjson.util"
+  ],
+  "notes": {
+    "en": [
+      "This repository records package-level ownership and module names.",
+      "Function-level API help can be layered later without changing the package schema."
+    ],
+    "zh": [
+      "当前仓库先记录包级归属和模块名。",
+      "后续可以在不改包级 schema 的前提下继续补函数级帮助。"
+    ]
+  }
+}

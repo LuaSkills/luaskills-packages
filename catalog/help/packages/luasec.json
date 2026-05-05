@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "package_name": "luasec",
+  "title": {
+    "en": "luasec package help",
+    "zh": "luasec 包帮助"
+  },
+  "summary": {
+    "en": "TLS and SSL support layered on LuaSocket, with a Windows-specific generated override in the official bundle.",
+    "zh": "构建在 LuaSocket 之上的 TLS / SSL 能力，官方 bundle 为 Windows 额外生成 override。"
+  },
+  "modules": [
+    "ssl",
+    "ssl.https"
+  ],
+  "notes": {
+    "en": [
+      "The official bundle uses generated Windows override sources instead of committing final rockspec outputs.",
+      "The help file records ownership and scope, not API examples."
+    ],
+    "zh": [
+      "官方 bundle 使用生成式 Windows override，而不是直接提交最终 rockspec 产物。",
+      "帮助文件记录归属与范围，不包含 API 示例。"
+    ]
+  }
+}

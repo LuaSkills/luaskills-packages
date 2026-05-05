@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "package_name": "luasec",
+  "os": "windows",
+  "strategy": "template",
+  "template_file": "templates/rockspec/windows/luasec.lua.tpl",
+  "output_name": "luasec-{{version}}.rockspec",
+  "variables": {
+    "version": "1.3.2-1",
+    "source_url": "git+https://github.com/brunoos/luasec",
+    "source_tag": "v1.3.2"
+  }
+}

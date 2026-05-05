@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "package_name": "lua-zlib",
+  "title": {
+    "en": "lua-zlib package help",
+    "zh": "lua-zlib 包帮助"
+  },
+  "summary": {
+    "en": "Compression and decompression helpers backed by zlib.",
+    "zh": "由 zlib 支撑的压缩与解压缩辅助。"
+  },
+  "modules": [
+    "zlib"
+  ],
+  "notes": {
+    "en": [
+      "This package does not need a generated rockspec override today, but it still participates in legacy compatibility export metadata."
+    ],
+    "zh": [
+      "这个包当前不需要生成 override，但仍然会参与 legacy 兼容导出元数据。"
+    ]
+  }
+}

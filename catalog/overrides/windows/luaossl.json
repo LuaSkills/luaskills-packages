@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "package_name": "luaossl",
+  "os": "windows",
+  "strategy": "template",
+  "template_file": "templates/rockspec/windows/luaossl.lua.tpl",
+  "output_name": "luaossl-{{version}}.rockspec",
+  "variables": {
+    "version": "20250929-0",
+    "source_url": "https://github.com/wahern/luaossl/archive/rel-20250929.zip",
+    "source_md5": "ddc1b75de8d8084eef15d3a31a241155",
+    "source_dir": "luaossl-rel-20250929"
+  }
+}

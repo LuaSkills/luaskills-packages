@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "package_name": "lyaml",
+  "title": {
+    "en": "lyaml package help",
+    "zh": "lyaml 包帮助"
+  },
+  "summary": {
+    "en": "YAML parsing and emitting package with a native `yaml` module and Lua convenience layers.",
+    "zh": "包含 native `yaml` 模块与 Lua 便利层的 YAML 读写包。"
+  },
+  "modules": [
+    "yaml",
+    "lyaml",
+    "lyaml.explicit",
+    "lyaml.functional",
+    "lyaml.implicit"
+  ],
+  "notes": {
+    "en": [
+      "The official Windows override replaces the default upstream build approach with a generated builtin-builder template."
+    ],
+    "zh": [
+      "官方 Windows override 会把上游默认构建方式替换成生成式 builtin builder 模板。"
+    ]
+  }
+}

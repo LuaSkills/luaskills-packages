@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "package_name": "lyaml",
+  "os": "windows",
+  "strategy": "template",
+  "template_file": "templates/rockspec/windows/lyaml.lua.tpl",
+  "output_name": "lyaml-{{version}}.rockspec",
+  "variables": {
+    "version": "6.2.8-1",
+    "source_url": "https://github.com/gvvaughan/lyaml/archive/refs/tags/v6.2.8.zip",
+    "source_dir": "lyaml-6.2.8",
+    "semantic_version": "6.2.8"
+  }
+}

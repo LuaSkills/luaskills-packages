@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "package_name": "luaossl",
+  "title": {
+    "en": "luaossl package help",
+    "zh": "luaossl 包帮助"
+  },
+  "summary": {
+    "en": "Large OpenSSL package surface with many public Lua modules under the `openssl.*` namespace.",
+    "zh": "在 `openssl.*` 命名空间下暴露大量公开 Lua 模块的 OpenSSL 包。"
+  },
+  "modules": [
+    "openssl",
+    "openssl.auxlib",
+    "openssl.bignum",
+    "openssl.cipher",
+    "openssl.des",
+    "openssl.digest",
+    "openssl.hmac",
+    "openssl.kdf",
+    "openssl.ocsp.basic",
+    "openssl.ocsp.response",
+    "openssl.pkcs12",
+    "openssl.pkey",
+    "openssl.pubkey",
+    "openssl.rand",
+    "openssl.ssl",
+    "openssl.ssl.context",
+    "openssl.x509",
+    "openssl.x509.altname",
+    "openssl.x509.chain",
+    "openssl.x509.crl",
+    "openssl.x509.csr",
+    "openssl.x509.extension",
+    "openssl.x509.name",
+    "openssl.x509.store",
+    "openssl.x509.verify_param"
+  ],
+  "notes": {
+    "en": [
+      "The package contains a broad module tree, so package ownership metadata is especially important here.",
+      "The official Windows override keeps OpenSSL 3 naming aligned with the LuaSkills runtime bundle."
+    ],
+    "zh": [
+      "这个包的模块树很大，因此包归属元数据在这里尤其重要。",
+      "官方 Windows override 用来保持 OpenSSL 3 命名与 LuaSkills runtime bundle 一致。"
+    ]
+  }
+}

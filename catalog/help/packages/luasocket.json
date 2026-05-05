@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "package_name": "luasocket",
+  "title": {
+    "en": "luasocket package help",
+    "zh": "luasocket 包帮助"
+  },
+  "summary": {
+    "en": "Socket, MIME, and stream helper package with multiple public Lua modules and a few internal native cores.",
+    "zh": "包含 socket、MIME 与流辅助模块的包，同时带少量内部 native 核心模块。"
+  },
+  "modules": [
+    "ltn12",
+    "mime",
+    "mime.core",
+    "socket",
+    "socket.core",
+    "socket.ftp",
+    "socket.headers",
+    "socket.http",
+    "socket.smtp",
+    "socket.tp",
+    "socket.url"
+  ],
+  "notes": {
+    "en": [
+      "Not every observed runtime file should be treated as a top-level package.",
+      "This package owns several public module names that appear independent when only scanned from disk."
+    ],
+    "zh": [
+      "不是每个扫描到的运行时文件都应该被当成独立包。",
+      "这个包会导出多个公开模块名，单纯扫磁盘时它们看起来像彼此独立。"
+    ]
+  }
+}
