@@ -22,6 +22,17 @@ def copy_file(source: Path, destination: Path) -> None:
     shutil.copy2(source, destination)
 
 
+def rewrite_lua_packages_for_luaskills(source_text: str) -> str:
+    """Rewrite exported package paths so one luaskills checkout can consume them directly.
+    重写导出的包路径，使其可被一个 luaskills 工作副本直接消费。
+    """
+
+    return source_text.replace(
+        "path:dist/luarocks_overrides/windows/",
+        "path:scripts/luarocks_overrides/windows/",
+    )
+
+
 def sync_generated_inputs(luaskills_root: Path) -> None:
     """Sync generated compatibility files into one luaskills checkout.
     将生成的兼容文件同步进一个 luaskills 工作副本。
@@ -36,7 +47,11 @@ def sync_generated_inputs(luaskills_root: Path) -> None:
         raise FileNotFoundError(f"generated lua_packages.txt not found: {lua_packages_source}")
 
     luaskills_scripts_dir = luaskills_root / "scripts"
-    copy_file(lua_packages_source, luaskills_scripts_dir / "lua_packages.txt")
+    lua_packages_text = lua_packages_source.read_text(encoding="utf-8")
+    write_text(
+        luaskills_scripts_dir / "lua_packages.txt",
+        rewrite_lua_packages_for_luaskills(lua_packages_text),
+    )
 
     override_source_root = dist_root / "luarocks_overrides" / "windows"
     override_destination_root = luaskills_scripts_dir / "luarocks_overrides" / "windows"
