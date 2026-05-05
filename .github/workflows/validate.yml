@@ -29,6 +29,9 @@ jobs:
       - name: Export platform support matrix
         run: python scripts/export_platform_support.py
 
+      - name: Export runtime bundle metadata
+        run: python scripts/export_runtime_bundle_metadata.py
+
       - name: Export third-party license notices
         run: python scripts/export_third_party_licenses.py
 

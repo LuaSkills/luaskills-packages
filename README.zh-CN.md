@@ -91,6 +91,8 @@ scripts/
 
 - `dist/lua_packages.txt`
 - `dist/luarocks_overrides/...`
+- `dist/install-manifest.json`
+- `dist/help/...`
 - `dist/platform-support.json`
 - `dist/platform-support.md`
 - `dist/THIRD_PARTY_LICENSES.json`
@@ -193,8 +195,9 @@ scripts/
 2. 运行 `python scripts/export_lua_packages_txt.py`
 3. 运行 `python scripts/render_rockspec_overrides.py`
 4. 运行 `python scripts/export_platform_support.py`
-5. 运行 `python scripts/export_third_party_licenses.py`
-6. 上传 `dist/` 目录作为 artifact
+5. 运行 `python scripts/export_runtime_bundle_metadata.py`
+6. 运行 `python scripts/export_third_party_licenses.py`
+7. 上传 `dist/` 目录作为 artifact
 
 这样：
 
@@ -227,6 +230,12 @@ python scripts/render_rockspec_overrides.py
 python scripts/export_platform_support.py
 ```
 
+导出 runtime 安装清单与帮助索引：
+
+```bash
+python scripts/export_runtime_bundle_metadata.py
+```
+
 导出第三方许可证清单：
 
 ```bash
@@ -246,6 +255,20 @@ python scripts/scan_runtime_modules.py --lua-packages-dir /path/to/runtime/lua_p
 ```
 
 仓库里已经放了一份 `catalog/observed/` 下的官方 Windows 运行时观测样本，用来说明“实际导出了什么模块”，但它不是包归属事实源。
+
+## 发布产物
+
+打 tag 发布时，当前仓库会额外挂出：
+
+- `luaskills-packages-bundle-vX.Y.Z.zip`
+- `luaskills-packages-bundle-vX.Y.Z.sha256`
+- `lua-deps-{platform}.tar.gz`
+- `lua-deps-{platform}.tar.gz.sha256`
+
+其中：
+
+- `bundle` 用于给 `luaskills` runtime 提供包规则、帮助、license 与平台元数据
+- `lua-deps` 用于给主仓库和后续 SDK 安装链提供预编译原生依赖资产
 
 ## 与主仓库的关系
 

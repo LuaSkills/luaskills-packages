@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "bundle_id": "official",
-  "bundle_version": "0.1.0",
+  "bundle_version": "0.1.4",
   "bundle_name": {
     "en": "LuaSkills official packages bundle",
     "zh": "LuaSkills 官方包集合"
@@ -14,6 +14,8 @@
     "luarocks_override_directory": "dist/luarocks_overrides",
     "platform_support_json": "dist/platform-support.json",
     "platform_support_markdown": "dist/platform-support.md",
+    "install_manifest_json": "dist/install-manifest.json",
+    "help_directory": "dist/help",
     "third_party_licenses_json": "dist/THIRD_PARTY_LICENSES.json",
     "third_party_notices_markdown": "dist/THIRD_PARTY_NOTICES.md",
     "license_directory": "dist/licenses"

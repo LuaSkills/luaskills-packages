@@ -214,11 +214,15 @@ The repository can generate several important outputs:
    - compatibility export for existing LuaSkills-side package installers
 2. **`dist/luarocks_overrides/...`**
    - generated platform-specific override rockspecs
-3. **`dist/platform-support.json` and `dist/platform-support.md`**
+3. **`dist/install-manifest.json`**
+   - structured package/install metadata for runtime consumers
+4. **`dist/help/...`**
+   - runtime-facing package help index and curated package help files
+5. **`dist/platform-support.json` and `dist/platform-support.md`**
    - generated target support matrix for the official bundle
-4. **`dist/THIRD_PARTY_LICENSES.json` and `dist/THIRD_PARTY_NOTICES.md`**
+6. **`dist/THIRD_PARTY_LICENSES.json` and `dist/THIRD_PARTY_NOTICES.md`**
    - generated third-party notice manifests
-5. **`dist/licenses/...`**
+7. **`dist/licenses/...`**
    - optionally fetched upstream license texts
 
 These outputs are intentionally ignored by Git and should be produced in CI or local release workflows.
@@ -251,6 +255,12 @@ Export the supported target matrix:
 python scripts/export_platform_support.py
 ```
 
+Export runtime-facing install/help metadata:
+
+```bash
+python scripts/export_runtime_bundle_metadata.py
+```
+
 Export third-party notice manifests:
 
 ```bash
@@ -278,7 +288,15 @@ This repository is designed to work cleanly with GitHub Actions:
 - validate the catalog on every push and pull request
 - generate compatibility artifacts
 - export platform support and third-party notice artifacts
+- export runtime-facing install manifests and package help
 - upload the generated `dist/` directory as a CI artifact
+
+Tagged releases also publish:
+
+- `luaskills-packages-bundle-vX.Y.Z.zip`
+- `luaskills-packages-bundle-vX.Y.Z.sha256`
+- `lua-deps-{platform}.tar.gz`
+- `lua-deps-{platform}.tar.gz.sha256`
 
 That model keeps the repository human-authored while still making generated outputs easy to inspect in CI.
 

@@ -62,9 +62,10 @@ def sync_generated_inputs(luaskills_root: Path) -> None:
 
     provenance_payload = {
         "schema_version": 1,
-        "source_repository": "luaskills-packages",
+        "source_repository": "LuaSkills/luaskills-packages",
         "bundle_id": bundle["bundle_id"],
         "bundle_version": bundle["bundle_version"],
+        "resolved_tag": f"v{bundle['bundle_version']}",
         "generated_files": {
             "lua_packages_txt": str(lua_packages_source.relative_to(packages_root)).replace("\\", "/"),
             "windows_override_directory": str(override_source_root.relative_to(packages_root)).replace("\\", "/")

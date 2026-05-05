@@ -111,6 +111,36 @@ jobs:
           cd luaskills
           "$(brew --prefix)/bin/bash" scripts/install_lua_deps.sh
 
+      - name: Package lua-deps archive (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Set-Location luaskills
+          New-Item -ItemType Directory -Force -Path "target\release-packages" | Out-Null
+          $archivePath = (Resolve-Path -LiteralPath "target\release-packages").Path + "\lua-deps-${{ matrix.platform }}.tar.gz"
+          if (Test-Path -LiteralPath $archivePath) {
+            Remove-Item -LiteralPath $archivePath -Force
+          }
+          Push-Location "third_party\deps"
+          try {
+            $members = @("openssl", "curl", "zlib", "pcre2", "libyaml")
+            tar -czf $archivePath @members
+          } finally {
+            Pop-Location
+          }
+          $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $archivePath).Hash.ToLowerInvariant()
+          "$hash  $(Split-Path -Leaf $archivePath)" | Set-Content -Path "$archivePath.sha256" -Encoding ascii
+
+      - name: Package lua-deps archive (Unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd luaskills
+          mkdir -p target/release-packages
+          tar -czf "target/release-packages/lua-deps-${{ matrix.platform }}.tar.gz" -C third_party/deps openssl curl zlib pcre2 libyaml
+          (cd target/release-packages && sha256sum "lua-deps-${{ matrix.platform }}.tar.gz" > "lua-deps-${{ matrix.platform }}.tar.gz.sha256")
+
       - name: Package runtime (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
@@ -135,6 +165,8 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path validation-release | Out-Null
+          Copy-Item -LiteralPath "luaskills\target\release-packages\lua-deps-${{ matrix.platform }}.tar.gz" -Destination "validation-release\lua-deps-${{ matrix.platform }}.tar.gz" -Force
+          Copy-Item -LiteralPath "luaskills\target\release-packages\lua-deps-${{ matrix.platform }}.tar.gz.sha256" -Destination "validation-release\lua-deps-${{ matrix.platform }}.tar.gz.sha256" -Force
           Copy-Item -LiteralPath "luaskills\target\release-packages\lua-runtime-${{ matrix.platform }}.tar.gz" -Destination "validation-release\runtime-validation-${{ matrix.platform }}.tar.gz" -Force
           Copy-Item -LiteralPath "luaskills\scripts\lua_packages.generated-from.json" -Destination "validation-release\runtime-validation-${{ matrix.platform }}.generated-from.json" -Force
 
@@ -144,6 +176,8 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p validation-release
+          cp "luaskills/target/release-packages/lua-deps-${{ matrix.platform }}.tar.gz" "validation-release/lua-deps-${{ matrix.platform }}.tar.gz"
+          cp "luaskills/target/release-packages/lua-deps-${{ matrix.platform }}.tar.gz.sha256" "validation-release/lua-deps-${{ matrix.platform }}.tar.gz.sha256"
           cp "luaskills/target/release-packages/lua-runtime-${{ matrix.platform }}.tar.gz" "validation-release/runtime-validation-${{ matrix.platform }}.tar.gz"
           cp "luaskills/scripts/lua_packages.generated-from.json" "validation-release/runtime-validation-${{ matrix.platform }}.generated-from.json"
 
@@ -152,6 +186,8 @@ jobs:
         with:
           name: luaskills-runtime-validation-${{ matrix.platform }}
           path: |
+            validation-release/lua-deps-${{ matrix.platform }}.tar.gz
+            validation-release/lua-deps-${{ matrix.platform }}.tar.gz.sha256
             validation-release/runtime-validation-${{ matrix.platform }}.tar.gz
             validation-release/runtime-validation-${{ matrix.platform }}.generated-from.json
 
@@ -160,6 +196,8 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: |
+            validation-release/lua-deps-${{ matrix.platform }}.tar.gz
+            validation-release/lua-deps-${{ matrix.platform }}.tar.gz.sha256
             validation-release/runtime-validation-${{ matrix.platform }}.tar.gz
             validation-release/runtime-validation-${{ matrix.platform }}.generated-from.json
           generate_release_notes: false
@@ -189,6 +227,9 @@ jobs:
 
       - name: Export platform support matrix
         run: python scripts/export_platform_support.py
+
+      - name: Export runtime bundle metadata
+        run: python scripts/export_runtime_bundle_metadata.py
 
       - name: Export third-party notice manifests
         run: python scripts/export_third_party_licenses.py
