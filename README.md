@@ -225,6 +225,15 @@ The repository can generate several important outputs:
 7. **`dist/licenses/...`**
    - optionally fetched upstream license texts
 
+Release workflows also publish platform-scoped runtime assets:
+
+8. **`lua-deps-{platform}.tar.gz`**
+   - native dependency layer used to assemble or validate one runtime layout
+9. **`lua-runtime-packages-{platform}.tar.gz`**
+   - the formal packages-side runtime layer containing `lua_packages/`, `resources/luaskills-packages/...`, third-party runtime libraries, and package-side license metadata, but excluding the core `luaskills` dynamic library
+10. **`runtime-validation-{platform}.tar.gz`**
+   - one full validated runtime sample kept for CI proof and troubleshooting rather than the primary downstream installation interface
+
 These outputs are intentionally ignored by Git and should be produced in CI or local release workflows.
 
 ## Local Commands

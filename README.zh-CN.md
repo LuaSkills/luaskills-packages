@@ -99,6 +99,15 @@ scripts/
 - `dist/THIRD_PARTY_NOTICES.md`
 - `dist/licenses/...`
 
+发布工作流还会额外产出按平台区分的 runtime 资产：
+
+- `lua-deps-{platform}.tar.gz`
+  - 用于组装或验证 runtime 布局的原生依赖层
+- `lua-runtime-packages-{platform}.tar.gz`
+  - 正式的 packages 侧 runtime 层，包含 `lua_packages/`、`resources/luaskills-packages/...`、第三方运行库与 packages 侧授权元数据，但不再包含 core `luaskills` 动态库
+- `runtime-validation-{platform}.tar.gz`
+  - 用于 CI 证明与问题排查的完整 runtime 验证样品，不作为首选下游安装接口
+
 这些文件不应当作为主要维护对象直接手改。
 
 ### 3. package catalog 和 runtime scan 分离
