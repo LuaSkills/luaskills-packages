@@ -33,6 +33,34 @@ def rewrite_lua_packages_for_luaskills(source_text: str) -> str:
     )
 
 
+def build_active_bundle_state(packages_root: Path, bundle: dict, dist_root: Path) -> dict:
+    """Build one active runtime-packages state payload for a local workspace bundle.
+    为本地工作区 bundle 构建一份活动 runtime-packages 状态载荷。
+    """
+
+    bundle_version = str(bundle["bundle_version"])
+    version_parts = bundle_version.split(".")
+    if len(version_parts) < 2:
+        raise ValueError(f"unsupported bundle version: {bundle_version}")
+
+    compat_path = dist_root / "lua_packages.txt"
+    if not compat_path.exists():
+        raise FileNotFoundError(f"generated lua_packages.txt not found: {compat_path}")
+
+    return {
+        "schema_version": 1,
+        "repository": "LuaSkills/luaskills-packages",
+        "series": f"{version_parts[0]}.{version_parts[1]}",
+        "resolved_tag": f"v{bundle_version}",
+        "bundle_id": bundle["bundle_id"],
+        "bundle_version": bundle_version,
+        "generation_mode": "workspace-bundle",
+        "bundle_root": str(packages_root.resolve()),
+        "dist_root": str(dist_root.resolve()),
+        "compat_lua_packages": str(compat_path.resolve()),
+    }
+
+
 def sync_generated_inputs(luaskills_root: Path) -> None:
     """Sync generated compatibility files into one luaskills checkout.
     将生成的兼容文件同步进一个 luaskills 工作副本。
@@ -76,6 +104,12 @@ def sync_generated_inputs(luaskills_root: Path) -> None:
     write_text(
         luaskills_scripts_dir / "lua_packages.generated-from.json",
         json.dumps(provenance_payload, ensure_ascii=False, indent=2) + "\n",
+    )
+
+    active_bundle_state = build_active_bundle_state(packages_root, bundle, dist_root)
+    write_text(
+        luaskills_root / "target" / "runtime-packages" / "active.json",
+        json.dumps(active_bundle_state, ensure_ascii=False, indent=2) + "\n",
     )
 
 
