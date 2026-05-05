@@ -9,6 +9,9 @@ on:
     types:
       - published
 
+permissions:
+  contents: write
+
 jobs:
   export:
     runs-on: ubuntu-latest
@@ -39,8 +42,32 @@ jobs:
       - name: Fetch license texts
         run: python scripts/fetch_license_texts.py
 
+      - name: Create bundle archive
+        run: |
+          bundle_name="luaskills-packages-bundle-${GITHUB_REF_NAME}"
+          cd dist
+          zip -r "../${bundle_name}.zip" .
+          cd ..
+          sha256sum "${bundle_name}.zip" > "${bundle_name}.sha256"
+
       - name: Upload bundle artifacts
         uses: actions/upload-artifact@v4
         with:
           name: luaskills-packages-bundle
-          path: dist/
+          path: |
+            dist/
+            luaskills-packages-bundle-*.zip
+            luaskills-packages-bundle-*.sha256
+
+      - name: Publish release assets
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            luaskills-packages-bundle-*.zip
+            luaskills-packages-bundle-*.sha256
+            dist/platform-support.json
+            dist/platform-support.md
+            dist/THIRD_PARTY_LICENSES.json
+            dist/THIRD_PARTY_NOTICES.md
+          generate_release_notes: true

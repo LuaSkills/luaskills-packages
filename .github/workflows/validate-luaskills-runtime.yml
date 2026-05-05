@@ -1,0 +1,136 @@
+name: Validate Against LuaSkills Runtime
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    name: ${{ matrix.platform }} @ ${{ matrix.runner }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # SupportedTargets defines the only runtime platforms this repository validates.
+          # SupportedTargets 定义本仓库实际验证的唯一运行时目标集合。
+          - platform: windows-x64
+            runner: windows-latest
+            os: windows
+          - platform: linux-x64
+            runner: ubuntu-24.04
+            os: linux
+          - platform: linux-arm64
+            runner: ubuntu-24.04-arm
+            os: linux
+          - platform: macos-x64
+            runner: macos-15-intel
+            os: macos
+          - platform: macos-arm64
+            runner: macos-15
+            os: macos
+
+    steps:
+      - name: Checkout luaskills-packages
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Export package inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/validate_catalog.py
+          python scripts/export_lua_packages_txt.py
+          python scripts/render_rockspec_overrides.py
+
+      - name: Checkout luaskills
+        uses: actions/checkout@v4
+        with:
+          repository: LuaSkills/luaskills
+          path: luaskills
+
+      - name: Setup Rust 1.94
+        shell: bash
+        run: |
+          rustup toolchain install 1.94.0 --profile minimal
+          rustup default 1.94.0
+          rustc --version
+          cargo --version
+
+      - name: Sync generated inputs into luaskills
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/sync_into_luaskills_repo.py --luaskills-root luaskills
+
+      - name: Build luaskills (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Set-Location luaskills
+          cargo build --release
+
+      - name: Build luaskills (Unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd luaskills
+          cargo build --release
+
+      - name: Install Lua packages (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Set-Location luaskills
+          powershell -ExecutionPolicy Bypass -File scripts\install_lua_deps.ps1
+
+      - name: Install Lua packages (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd luaskills
+          bash scripts/install_lua_deps.sh
+
+      - name: Install Lua packages (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -euo pipefail
+          brew install bash
+          cd luaskills
+          "$(brew --prefix)/bin/bash" scripts/install_lua_deps.sh
+
+      - name: Package runtime (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Set-Location luaskills
+          powershell -ExecutionPolicy Bypass -File scripts\package_lua_runtime.ps1 -Platform "${{ matrix.platform }}" -OutputDir "target\release-packages"
+          if (-not (Test-Path -LiteralPath "target\release-packages\lua-runtime-${{ matrix.platform }}.tar.gz")) {
+            throw "missing runtime package archive"
+          }
+
+      - name: Package runtime (Unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd luaskills
+          bash scripts/package_lua_runtime.sh "${{ matrix.platform }}"
+          test -f "target/release-packages/lua-runtime-${{ matrix.platform }}.tar.gz"
+
+      - name: Upload validation runtime archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: luaskills-runtime-validation-${{ matrix.platform }}
+          path: |
+            luaskills/target/release-packages/lua-runtime-${{ matrix.platform }}.tar.gz
+            luaskills/scripts/lua_packages.generated-from.json
