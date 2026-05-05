@@ -110,6 +110,50 @@ def rewrite_runtime_manifest(runtime_root: Path, platform: str) -> dict[str, Any
     return payload
 
 
+def ensure_runtime_packages_manifest(runtime_root: Path, platform: str) -> None:
+    """Ensure the extracted runtime tree contains one packages-side manifest file.
+    确保已解压的 runtime 目录树包含一个 packages 侧清单文件。
+    """
+
+    manifest_path = runtime_root / "resources" / "luaskills-packages-manifest.json"
+    if manifest_path.exists():
+        return
+
+    packages_root = runtime_root / "resources" / "luaskills-packages"
+    install_manifest_path = packages_root / "install-manifest.json"
+    install_payload: dict[str, Any] = {}
+    if install_manifest_path.exists():
+        install_payload = json.loads(install_manifest_path.read_text(encoding="utf-8"))
+    source_payload = install_payload.get("source", {}) if isinstance(install_payload.get("source"), dict) else {}
+    bundle_version = str(source_payload.get("bundle_version", "0.0.0-local"))
+    series = str(source_payload.get("series", "compat"))
+    write_json(
+        manifest_path,
+        {
+            "schema_version": 1,
+            "repository": "LuaSkills/luaskills-packages",
+            "bundle_id": str(source_payload.get("bundle_id", "compat-generated")),
+            "bundle_version": bundle_version,
+            "series": series,
+            "resolved_tag": f"v{bundle_version}" if bundle_version and bundle_version != "0.0.0-local" else "",
+            "platform": platform,
+            "layout": "luaskills-packages-runtime-v1",
+            "generation_mode": "runtime-export-normalized",
+            "paths": {
+                "install_manifest": "resources/luaskills-packages/install-manifest.json",
+                "compat_lua_packages_txt": "resources/luaskills-packages/lua_packages.txt",
+                "platform_support": "resources/luaskills-packages/platform-support.json",
+                "third_party_licenses": "resources/luaskills-packages/THIRD_PARTY_LICENSES.json",
+                "third_party_notices": "resources/luaskills-packages/THIRD_PARTY_NOTICES.md",
+                "help_index": "resources/luaskills-packages/help/index.json",
+                "package_help_root": "resources/luaskills-packages/help/packages",
+                "module_help_root": "resources/luaskills-packages/help/modules",
+                "license_index": "licenses/luaskills-packages/index.json",
+            },
+        },
+    )
+
+
 def rewrite_bundled_libs(runtime_root: Path, removed_paths: list[str]) -> None:
     """Drop core runtime library entries from bundled-libs metadata when present.
     在 bundled-libs 元数据存在时移除 core runtime 库条目。
@@ -188,13 +232,13 @@ def export_runtime_packages_archive(source_archive: Path, platform: str, output_
         required_paths = [
             extracted_root / "lua_packages",
             extracted_root / "resources" / "lua-runtime-manifest.json",
-            extracted_root / "resources" / "luaskills-packages-manifest.json",
             extracted_root / "resources" / "luaskills-packages",
             extracted_root / "licenses" / "manifest.json",
         ]
         for required in required_paths:
             if not required.exists():
                 raise FileNotFoundError(f"runtime archive is missing required path: {required.relative_to(extracted_root)}")
+        ensure_runtime_packages_manifest(extracted_root, platform)
 
         removed_paths = remove_core_runtime_bits(extracted_root, platform)
         removed_paths.extend(remove_core_runtime_licenses(extracted_root))
