@@ -17,6 +17,9 @@ env:
   ZLIB_VERSION: "1.3.1"
   PCRE2_VERSION: "10.45"
   LIBYAML_VERSION: "0.2.5"
+  EXPAT_VERSION: "2.7.2"
+  WIN_ICONV_VERSION: "0.0.10"
+  ZZIPLIB_VERSION: "0.13.80"
   PERL_VERSION: "5.38.2.2"
 
 jobs:
@@ -195,6 +198,55 @@ jobs:
           Pop-Location
           Pop-Location
 
+          $expatTag = "R_$($env:EXPAT_VERSION -replace '\.', '_')"
+          $url = "https://github.com/libexpat/libexpat/archive/refs/tags/$expatTag.tar.gz"
+          curl -fSL $url -o expat.tar.gz
+          tar -xzf expat.tar.gz
+          $expatRoot = (Get-ChildItem -Directory -Filter "libexpat-*" | Sort-Object Name | Select-Object -Last 1).FullName
+          if (-not $expatRoot) {
+            throw "failed to locate extracted expat source directory"
+          }
+          Push-Location (Join-Path $expatRoot "expat")
+          $buildDir = "build"
+          New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
+          Push-Location $buildDir
+          cmake .. -GNinja "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:DEPS_DIR\expat" "-DBUILD_SHARED_LIBS=ON" "-DEXPAT_SHARED_LIBS=ON" "-DEXPAT_BUILD_EXAMPLES=OFF" "-DEXPAT_BUILD_TESTS=OFF" "-DEXPAT_BUILD_TOOLS=OFF" "-DEXPAT_BUILD_DOCS=OFF" "-DEXPAT_BUILD_FUZZERS=OFF" "-DEXPAT_BUILD_PKGCONFIG=OFF"
+          ninja install
+          Pop-Location
+          Pop-Location
+
+          $url = "https://github.com/win-iconv/win-iconv/archive/refs/tags/v$env:WIN_ICONV_VERSION.tar.gz"
+          curl -fSL $url -o win-iconv.tar.gz
+          tar -xzf win-iconv.tar.gz
+          $iconvRoot = (Get-ChildItem -Directory -Filter "win-iconv-*" | Sort-Object Name | Select-Object -Last 1).FullName
+          if (-not $iconvRoot) {
+            throw "failed to locate extracted win-iconv source directory"
+          }
+          Push-Location $iconvRoot
+          $buildDir = "build"
+          New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
+          Push-Location $buildDir
+          cmake .. -GNinja "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:DEPS_DIR\iconv" "-DWIN_ICONV_BUILD_SHARED=ON" "-DWIN_ICONV_BUILD_STATIC=OFF" "-DWIN_ICONV_BUILD_EXECUTABLE=OFF" "-DWIN_ICONV_BUILD_TEST=OFF"
+          ninja install
+          Pop-Location
+          Pop-Location
+
+          $url = "https://github.com/gdraheim/zziplib/archive/refs/tags/v$env:ZZIPLIB_VERSION.tar.gz"
+          curl -fSL $url -o zziplib.tar.gz
+          tar -xzf zziplib.tar.gz
+          $zzipRoot = (Get-ChildItem -Directory -Filter "zziplib-*" | Sort-Object Name | Select-Object -Last 1).FullName
+          if (-not $zzipRoot) {
+            throw "failed to locate extracted zziplib source directory"
+          }
+          Push-Location $zzipRoot
+          $buildDir = "build"
+          New-Item -ItemType Directory -Force -Path $buildDir | Out-Null
+          Push-Location $buildDir
+          cmake .. -GNinja "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=$env:DEPS_DIR\zzip" "-DBUILD_SHARED_LIBS=ON" "-DZZIPMMAPPED=OFF" "-DZZIPFSEEKO=OFF" "-DZZIPWRAP=OFF" "-DZZIPSDL=OFF" "-DZZIPBINS=OFF" "-DZZIPTEST=OFF" "-DZZIPDOCS=OFF" "-DZLIB_ROOT=$env:DEPS_DIR\zlib" "-DCMAKE_PREFIX_PATH=$env:DEPS_DIR\zlib"
+          ninja install
+          Pop-Location
+          Pop-Location
+
       - name: Install build tools (Linux)
         if: runner.os == 'Linux'
         shell: bash
@@ -248,6 +300,21 @@ jobs:
           make install
           cd ..
 
+          expat_tag="R_${EXPAT_VERSION//./_}"
+          curl -fSL "https://github.com/libexpat/libexpat/archive/refs/tags/$expat_tag.tar.gz" | tar xz
+          expat_root="$(find . -maxdepth 1 -type d -name 'libexpat-*' | sort | tail -n 1)"
+          test -n "$expat_root"
+          cmake -S "$expat_root/expat" -B "$expat_root/expat/build" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$DEPS_DIR/expat" -DBUILD_SHARED_LIBS=ON -DEXPAT_SHARED_LIBS=ON -DEXPAT_BUILD_EXAMPLES=OFF -DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_BUILD_FUZZERS=OFF -DEXPAT_BUILD_PKGCONFIG=OFF
+          cmake --build "$expat_root/expat/build" --parallel "$jobs"
+          cmake --install "$expat_root/expat/build"
+
+          curl -fSL "https://github.com/gdraheim/zziplib/archive/refs/tags/v$ZZIPLIB_VERSION.tar.gz" | tar xz
+          zzip_root="$(find . -maxdepth 1 -type d -name 'zziplib-*' | sort | tail -n 1)"
+          test -n "$zzip_root"
+          cmake -S "$zzip_root" -B "$zzip_root/build" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$DEPS_DIR/zzip" -DBUILD_SHARED_LIBS=ON -DZZIPMMAPPED=OFF -DZZIPFSEEKO=OFF -DZZIPWRAP=OFF -DZZIPSDL=OFF -DZZIPBINS=OFF -DZZIPTEST=OFF -DZZIPDOCS=OFF -DZLIB_ROOT="$DEPS_DIR/zlib" -DCMAKE_PREFIX_PATH="$DEPS_DIR/zlib"
+          cmake --build "$zzip_root/build" --parallel "$jobs"
+          cmake --install "$zzip_root/build"
+
       - name: Install build tools (macOS)
         if: runner.os == 'macOS'
         shell: bash
@@ -300,11 +367,30 @@ jobs:
           make install
           cd ..
 
+          expat_tag="R_${EXPAT_VERSION//./_}"
+          curl -fSL "https://github.com/libexpat/libexpat/archive/refs/tags/$expat_tag.tar.gz" | tar xz
+          expat_root="$(find . -maxdepth 1 -type d -name 'libexpat-*' | sort | tail -n 1)"
+          test -n "$expat_root"
+          cmake -S "$expat_root/expat" -B "$expat_root/expat/build" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$DEPS_DIR/expat" -DBUILD_SHARED_LIBS=ON -DEXPAT_SHARED_LIBS=ON -DEXPAT_BUILD_EXAMPLES=OFF -DEXPAT_BUILD_TESTS=OFF -DEXPAT_BUILD_TOOLS=OFF -DEXPAT_BUILD_DOCS=OFF -DEXPAT_BUILD_FUZZERS=OFF -DEXPAT_BUILD_PKGCONFIG=OFF
+          cmake --build "$expat_root/expat/build" --parallel "$jobs"
+          cmake --install "$expat_root/expat/build"
+
+          curl -fSL "https://github.com/gdraheim/zziplib/archive/refs/tags/v$ZZIPLIB_VERSION.tar.gz" | tar xz
+          zzip_root="$(find . -maxdepth 1 -type d -name 'zziplib-*' | sort | tail -n 1)"
+          test -n "$zzip_root"
+          cmake -S "$zzip_root" -B "$zzip_root/build" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$DEPS_DIR/zzip" -DBUILD_SHARED_LIBS=ON -DZZIPMMAPPED=OFF -DZZIPFSEEKO=OFF -DZZIPWRAP=OFF -DZZIPSDL=OFF -DZZIPBINS=OFF -DZZIPTEST=OFF -DZZIPDOCS=OFF -DZLIB_ROOT="$DEPS_DIR/zlib" -DCMAKE_PREFIX_PATH="$DEPS_DIR/zlib"
+          cmake --build "$zzip_root/build" --parallel "$jobs"
+          cmake --install "$zzip_root/build"
+
       - name: Verify deps layout
         shell: bash
         run: |
           set -euo pipefail
-          for dir in openssl curl zlib pcre2 libyaml; do
+          required_dirs=(openssl curl zlib pcre2 libyaml expat zzip)
+          if [ "${RUNNER_OS:-}" = "Windows" ]; then
+            required_dirs+=(iconv)
+          fi
+          for dir in "${required_dirs[@]}"; do
             if [ ! -d "luaskills/third_party/deps/$dir" ]; then
               echo "::error::Missing dependency directory: luaskills/third_party/deps/$dir"
               exit 1
@@ -362,7 +448,7 @@ jobs:
           }
           Push-Location "third_party\deps"
           try {
-            $members = @("openssl", "curl", "zlib", "pcre2", "libyaml")
+            $members = @("openssl", "curl", "zlib", "pcre2", "libyaml", "expat", "iconv", "zzip")
             tar -czf $archivePath @members
           } finally {
             Pop-Location
@@ -377,7 +463,7 @@ jobs:
           set -euo pipefail
           cd luaskills
           mkdir -p target/release-packages
-          tar -czf "target/release-packages/lua-deps-${{ matrix.platform }}.tar.gz" -C third_party/deps openssl curl zlib pcre2 libyaml
+          tar -czf "target/release-packages/lua-deps-${{ matrix.platform }}.tar.gz" -C third_party/deps openssl curl zlib pcre2 libyaml expat zzip
           (cd target/release-packages && sha256sum "lua-deps-${{ matrix.platform }}.tar.gz" > "lua-deps-${{ matrix.platform }}.tar.gz.sha256")
 
       - name: Package runtime (Windows)

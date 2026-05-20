@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "package_name": "luazip",
+  "rock_name": "LuaZip",
+  "version": "1.2.7-1",
+  "category": "compression",
+  "homepage": "https://github.com/mpeterv/luazip",
+  "repository": "https://github.com/mpeterv/luazip",
+  "help_file": "catalog/help/packages/luazip.json",
+  "summary": {
+    "en": "Read files and directory entries from ZIP containers through a Lua I/O-style API.",
+    "zh": "通过接近 Lua I/O 的接口读取 ZIP 容器中的文件与目录项。"
+  },
+  "modules": [
+    {
+      "name": "zip",
+      "kind": "native",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [],
+    "args": [],
+    "env": [],
+    "dependencies": [
+      {
+        "name": "zzip",
+        "os": "windows",
+        "method": "cmake",
+        "url_or_hint": "https://github.com/gdraheim/zziplib/archive/refs/tags/v0.13.80.tar.gz"
+      },
+      {
+        "name": "zzip",
+        "os": "linux",
+        "method": "cmake",
+        "url_or_hint": "https://github.com/gdraheim/zziplib/archive/refs/tags/v0.13.80.tar.gz"
+      },
+      {
+        "name": "zzip",
+        "os": "macos",
+        "method": "cmake",
+        "url_or_hint": "https://github.com/gdraheim/zziplib/archive/refs/tags/v0.13.80.tar.gz"
+      }
+    ],
+    "depvars": [
+      {
+        "dep_name": "zzip",
+        "os": "windows",
+        "var_name": "ZZIP_DIR",
+        "value_ref": "dep:zzip"
+      },
+      {
+        "dep_name": "zzip",
+        "os": "windows",
+        "var_name": "ZZIP_LIBDIR",
+        "value_ref": "dep:zzip/lib"
+      },
+      {
+        "dep_name": "zzip",
+        "os": "windows",
+        "var_name": "ZZIP_INCDIR",
+        "value_ref": "dep:zzip/include"
+      },
+      {
+        "dep_name": "zzip",
+        "os": "linux",
+        "var_name": "ZZIP_DIR",
+        "value_ref": "dep:zzip"
+      },
+      {
+        "dep_name": "zzip",
+        "os": "linux",
+        "var_name": "ZZIP_LIBDIR",
+        "value_ref": "dep:zzip/lib"
+      },
+      {
+        "dep_name": "zzip",
+        "os": "linux",
+        "var_name": "ZZIP_INCDIR",
+        "value_ref": "dep:zzip/include"
+      },
+      {
+        "dep_name": "zzip",
+        "os": "macos",
+        "var_name": "ZZIP_DIR",
+        "value_ref": "dep:zzip"
+      },
+      {
+        "dep_name": "zzip",
+        "os": "macos",
+        "var_name": "ZZIP_LIBDIR",
+        "value_ref": "dep:zzip/lib"
+      },
+      {
+        "dep_name": "zzip",
+        "os": "macos",
+        "var_name": "ZZIP_INCDIR",
+        "value_ref": "dep:zzip/include"
+      }
+    ]
+  },
+  "override_rules": {},
+  "artifact_kind": "native",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/mpeterv/luazip/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/mpeterv/luazip/1.2.7/LICENSE"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

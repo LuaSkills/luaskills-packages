@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "package_name": "luaexpat",
+  "os": "windows",
+  "strategy": "template",
+  "template_file": "templates/rockspec/windows/luaexpat.lua.tpl",
+  "output_name": "luaexpat-{{version}}.rockspec",
+  "variables": {
+    "version": "1.5.2-1",
+    "source_url": "git+https://github.com/lunarmodules/luaexpat.git",
+    "source_tag": "1.5.2"
+  }
+}

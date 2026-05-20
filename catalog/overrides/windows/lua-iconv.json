@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "package_name": "lua-iconv",
+  "os": "windows",
+  "strategy": "template",
+  "template_file": "templates/rockspec/windows/lua-iconv.lua.tpl",
+  "output_name": "lua-iconv-{{version}}.rockspec",
+  "variables": {
+    "version": "7.1.0-1",
+    "source_url": "git+https://github.com/lunarmodules/lua-iconv.git",
+    "source_tag": "v7.1.0"
+  }
+}

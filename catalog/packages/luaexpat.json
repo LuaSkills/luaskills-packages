@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "package_name": "luaexpat",
+  "rock_name": "luaexpat",
+  "version": "1.5.2-1",
+  "category": "data-formats",
+  "homepage": "https://lunarmodules.github.io/luaexpat",
+  "repository": "https://github.com/lunarmodules/luaexpat",
+  "help_file": "catalog/help/packages/luaexpat.json",
+  "summary": {
+    "en": "SAX-style XML parsing built on top of the Expat parser.",
+    "zh": "构建在 Expat 解析器之上的 SAX 风格 XML 解析库。"
+  },
+  "modules": [
+    {
+      "name": "lxp",
+      "kind": "native",
+      "visibility": "public"
+    },
+    {
+      "name": "lxp.lom",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "lxp.totable",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "lxp.threat",
+      "kind": "lua",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [
+      {
+        "os": "windows",
+        "target_ref": "path:dist/luarocks_overrides/windows/luaexpat-1.5.2-1.rockspec"
+      }
+    ],
+    "args": [],
+    "env": [],
+    "dependencies": [
+      {
+        "name": "expat",
+        "os": "windows",
+        "method": "cmake",
+        "url_or_hint": "https://github.com/libexpat/libexpat/archive/refs/tags/R_2_7_2.tar.gz"
+      },
+      {
+        "name": "expat",
+        "os": "linux",
+        "method": "cmake",
+        "url_or_hint": "https://github.com/libexpat/libexpat/archive/refs/tags/R_2_7_2.tar.gz"
+      },
+      {
+        "name": "expat",
+        "os": "macos",
+        "method": "cmake",
+        "url_or_hint": "https://github.com/libexpat/libexpat/archive/refs/tags/R_2_7_2.tar.gz"
+      }
+    ],
+    "depvars": [
+      {
+        "dep_name": "expat",
+        "os": "windows",
+        "var_name": "EXPAT_DIR",
+        "value_ref": "dep:expat"
+      },
+      {
+        "dep_name": "expat",
+        "os": "windows",
+        "var_name": "EXPAT_LIBDIR",
+        "value_ref": "dep:expat/lib"
+      },
+      {
+        "dep_name": "expat",
+        "os": "windows",
+        "var_name": "EXPAT_INCDIR",
+        "value_ref": "dep:expat/include"
+      },
+      {
+        "dep_name": "expat",
+        "os": "linux",
+        "var_name": "EXPAT_DIR",
+        "value_ref": "dep:expat"
+      },
+      {
+        "dep_name": "expat",
+        "os": "linux",
+        "var_name": "EXPAT_LIBDIR",
+        "value_ref": "dep:expat/lib"
+      },
+      {
+        "dep_name": "expat",
+        "os": "linux",
+        "var_name": "EXPAT_INCDIR",
+        "value_ref": "dep:expat/include"
+      },
+      {
+        "dep_name": "expat",
+        "os": "macos",
+        "var_name": "EXPAT_DIR",
+        "value_ref": "dep:expat"
+      },
+      {
+        "dep_name": "expat",
+        "os": "macos",
+        "var_name": "EXPAT_LIBDIR",
+        "value_ref": "dep:expat/lib"
+      },
+      {
+        "dep_name": "expat",
+        "os": "macos",
+        "var_name": "EXPAT_INCDIR",
+        "value_ref": "dep:expat/include"
+      }
+    ]
+  },
+  "override_rules": {
+    "windows": "catalog/overrides/windows/luaexpat.json"
+  },
+  "artifact_kind": "hybrid",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT/X11 License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/lunarmodules/luaexpat/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/lunarmodules/luaexpat/1.5.2/LICENSE"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "generated-override"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

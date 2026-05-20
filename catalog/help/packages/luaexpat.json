@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "package_name": "luaexpat",
+  "title": {
+    "en": "luaexpat package help",
+    "zh": "luaexpat 包帮助"
+  },
+  "summary": {
+    "en": "SAX-style XML parsing package with the native `lxp` parser and Lua table helpers.",
+    "zh": "包含原生 `lxp` 解析器与 Lua 表辅助层的 SAX 风格 XML 解析包。"
+  },
+  "modules": [
+    "lxp",
+    "lxp.lom",
+    "lxp.totable",
+    "lxp.threat"
+  ],
+  "notes": {
+    "en": [
+      "The official Windows override switches the native link target to the bundled `libexpat` import library name."
+    ],
+    "zh": [
+      "官方 Windows override 会把原生链接目标切换为随 bundle 提供的 `libexpat` 导入库名。"
+    ]
+  }
+}

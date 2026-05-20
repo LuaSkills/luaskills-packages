@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "package_name": "luatz",
+  "rock_name": "luatz",
+  "version": "0.4-1",
+  "category": "utility",
+  "homepage": "https://github.com/daurnimator/luatz",
+  "repository": "https://github.com/daurnimator/luatz",
+  "help_file": "catalog/help/packages/luatz.json",
+  "summary": {
+    "en": "Pure-Lua date, time, and time zone helpers with timetable normalization.",
+    "zh": "提供时间、日期、时区与 timetable 归一化能力的纯 Lua 工具库。"
+  },
+  "modules": [
+    {
+      "name": "luatz",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "luatz.gettime",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "luatz.parse",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "luatz.strftime",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "luatz.timetable",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "luatz.tzcache",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "luatz.tzfile",
+      "kind": "lua",
+      "visibility": "public"
+    },
+    {
+      "name": "luatz.tzinfo",
+      "kind": "lua",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [],
+    "args": [],
+    "env": [],
+    "dependencies": [],
+    "depvars": []
+  },
+  "override_rules": {},
+  "artifact_kind": "lua-only",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/daurnimator/luatz/blob/master/COPYING",
+    "license_text_url": "https://raw.githubusercontent.com/daurnimator/luatz/v0.4/COPYING"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "pure-lua"
+    }
+  }
+}

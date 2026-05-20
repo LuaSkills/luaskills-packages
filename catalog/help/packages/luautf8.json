@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "package_name": "luautf8",
+  "title": {
+    "en": "luautf8 package help",
+    "zh": "luautf8 包帮助"
+  },
+  "summary": {
+    "en": "UTF-8 string package that extends Lua-compatible string routines with Unicode-aware operations.",
+    "zh": "在 Lua 兼容字符串接口基础上补充 Unicode 能力的 UTF-8 字符串处理包。"
+  },
+  "modules": [
+    "lua-utf8"
+  ],
+  "notes": {
+    "en": [
+      "Load this package with `require(\"lua-utf8\")`; it intentionally avoids clashing with Lua 5.3+ built-in `utf8`."
+    ],
+    "zh": [
+      "请通过 `require(\"lua-utf8\")` 加载本包；它刻意避免与 Lua 5.3+ 内建 `utf8` 模块冲突。"
+    ]
+  }
+}

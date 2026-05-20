@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "package_name": "luazip",
+  "title": {
+    "en": "luazip package help",
+    "zh": "luazip 包帮助"
+  },
+  "summary": {
+    "en": "ZIP container reading package that exposes archive and entry access through an I/O-style Lua API.",
+    "zh": "通过接近 I/O 的 Lua 接口暴露 ZIP 归档与条目访问能力的读取包。"
+  },
+  "modules": [
+    "zip"
+  ],
+  "notes": {
+    "en": [
+      "This package reads ZIP containers and depends on the native `zziplib` runtime dependency layer."
+    ],
+    "zh": [
+      "该包负责读取 ZIP 容器，并依赖原生 `zziplib` 运行时依赖层。"
+    ]
+  }
+}

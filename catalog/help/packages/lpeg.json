@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "package_name": "lpeg",
+  "title": {
+    "en": "lpeg package help",
+    "zh": "lpeg 包帮助"
+  },
+  "summary": {
+    "en": "PEG parsing and structured pattern matching with both the `lpeg` engine and the `re` grammar helper.",
+    "zh": "提供 `lpeg` 引擎与 `re` 语法辅助层的 PEG 解析与结构化模式匹配能力。"
+  },
+  "modules": [
+    "lpeg",
+    "re"
+  ],
+  "notes": {
+    "en": [
+      "LPeg is useful as a parser foundation for DSLs, structured text extraction, and grammar-driven tokenization."
+    ],
+    "zh": [
+      "LPeg 适合作为 DSL、结构化文本抽取与语法驱动分词的解析基础设施。"
+    ]
+  }
+}

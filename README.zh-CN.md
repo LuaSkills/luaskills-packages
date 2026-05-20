@@ -175,11 +175,17 @@ scripts/
 - `luasec`
 - `lua-curl`
 - `lrexlib-pcre2`
+- `lpeg`
 - `luaossl`
 - `lyaml`
 - `lua-toml`
+- `luaexpat`
 - `serpent`
+- `luautf8`
+- `luatz`
+- `lua-iconv`
 - `lua-zlib`
+- `luazip`
 
 ## fork 方式
 

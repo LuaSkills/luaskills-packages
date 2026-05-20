@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "package_name": "luautf8",
+  "rock_name": "luautf8",
+  "version": "0.2.0-1",
+  "category": "utility",
+  "homepage": "https://github.com/starwing/luautf8",
+  "repository": "https://github.com/starwing/luautf8",
+  "help_file": "catalog/help/packages/luautf8.json",
+  "summary": {
+    "en": "UTF-8 string helpers compatible with Lua string routines and Unicode-aware extras.",
+    "zh": "兼容 Lua 字符串接口并补充 Unicode 能力的 UTF-8 字符串工具库。"
+  },
+  "modules": [
+    {
+      "name": "lua-utf8",
+      "kind": "native",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [],
+    "args": [],
+    "env": [],
+    "dependencies": [],
+    "depvars": []
+  },
+  "override_rules": {},
+  "artifact_kind": "native",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/starwing/luautf8/blob/master/LICENSE",
+    "license_text_url": "https://raw.githubusercontent.com/starwing/luautf8/0.2.0/LICENSE"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

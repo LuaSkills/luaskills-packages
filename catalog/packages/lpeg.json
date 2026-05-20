@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "package_name": "lpeg",
+  "rock_name": "LPeg",
+  "version": "1.1.0-2",
+  "category": "regex",
+  "homepage": "https://www.inf.puc-rio.br/~roberto/lpeg.html",
+  "help_file": "catalog/help/packages/lpeg.json",
+  "summary": {
+    "en": "PEG-based pattern matching with both grammar and regex-style helpers.",
+    "zh": "基于 PEG 的模式匹配库，兼具语法规则与类正则辅助能力。"
+  },
+  "modules": [
+    {
+      "name": "lpeg",
+      "kind": "native",
+      "visibility": "public"
+    },
+    {
+      "name": "re",
+      "kind": "lua",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [],
+    "args": [],
+    "env": [],
+    "dependencies": [],
+    "depvars": []
+  },
+  "override_rules": {},
+  "artifact_kind": "hybrid",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT/X11 License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://www.inf.puc-rio.br/~roberto/lpeg/lpeg.html",
+    "license_text_url": "https://www.inf.puc-rio.br/~roberto/lpeg/lpeg.html"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

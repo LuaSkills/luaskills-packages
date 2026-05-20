@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "package_name": "lua-iconv",
+  "title": {
+    "en": "lua-iconv package help",
+    "zh": "lua-iconv 包帮助"
+  },
+  "summary": {
+    "en": "Character set transcoding package for converting between legacy encodings and UTF-8/Unicode.",
+    "zh": "用于在传统字符编码与 UTF-8/Unicode 之间做转码的字符集转换包。"
+  },
+  "modules": [
+    "iconv"
+  ],
+  "notes": {
+    "en": [
+      "The official Windows override links against the bundled `win-iconv` shared library so the same `iconv` API can be used cross-platform."
+    ],
+    "zh": [
+      "官方 Windows override 会链接随 bundle 提供的 `win-iconv` 共享库，以便跨平台复用同一套 `iconv` API。"
+    ]
+  }
+}

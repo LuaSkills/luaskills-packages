@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "package_name": "luatz",
+  "title": {
+    "en": "luatz package help",
+    "zh": "luatz 包帮助"
+  },
+  "summary": {
+    "en": "Pure-Lua date, time, formatting, and time zone helpers built around normalized timetable objects.",
+    "zh": "围绕标准化 timetable 对象提供日期、时间、格式化与时区能力的纯 Lua 工具包。"
+  },
+  "modules": [
+    "luatz",
+    "luatz.gettime",
+    "luatz.parse",
+    "luatz.strftime",
+    "luatz.timetable",
+    "luatz.tzcache",
+    "luatz.tzfile",
+    "luatz.tzinfo"
+  ],
+  "notes": {
+    "en": [
+      "The upstream `tzcache` implementation assumes IANA zoneinfo files such as `/usr/share/zoneinfo` and `/etc/localtime`."
+    ],
+    "zh": [
+      "上游 `tzcache` 实现默认假定存在 IANA zoneinfo 文件路径，例如 `/usr/share/zoneinfo` 与 `/etc/localtime`。"
+    ]
+  }
+}

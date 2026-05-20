@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "package_name": "lua-iconv",
+  "rock_name": "lua-iconv",
+  "version": "7.1.0-1",
+  "category": "utility",
+  "homepage": "https://github.com/lunarmodules/lua-iconv",
+  "repository": "https://github.com/lunarmodules/lua-iconv",
+  "help_file": "catalog/help/packages/lua-iconv.json",
+  "summary": {
+    "en": "POSIX iconv bindings for transcoding text between legacy and Unicode encodings.",
+    "zh": "面向 POSIX iconv 的绑定，用于在传统字符集与 Unicode 编码之间转码。"
+  },
+  "modules": [
+    {
+      "name": "iconv",
+      "kind": "native",
+      "visibility": "public"
+    }
+  ],
+  "legacy_config": {
+    "install": [
+      {
+        "os": "windows",
+        "target_ref": "path:dist/luarocks_overrides/windows/lua-iconv-7.1.0-1.rockspec"
+      }
+    ],
+    "args": [],
+    "env": [],
+    "dependencies": [
+      {
+        "name": "iconv",
+        "os": "windows",
+        "method": "cmake",
+        "url_or_hint": "https://github.com/win-iconv/win-iconv/archive/refs/tags/v0.0.10.tar.gz"
+      }
+    ],
+    "depvars": [
+      {
+        "dep_name": "iconv",
+        "os": "windows",
+        "var_name": "ICONV_DIR",
+        "value_ref": "dep:iconv"
+      },
+      {
+        "dep_name": "iconv",
+        "os": "windows",
+        "var_name": "ICONV_LIBDIR",
+        "value_ref": "dep:iconv/lib"
+      },
+      {
+        "dep_name": "iconv",
+        "os": "windows",
+        "var_name": "ICONV_INCDIR",
+        "value_ref": "dep:iconv/include"
+      }
+    ]
+  },
+  "override_rules": {
+    "windows": "catalog/overrides/windows/lua-iconv.json"
+  },
+  "artifact_kind": "native",
+  "license": {
+    "spdx_expression": "MIT",
+    "license_name": "MIT/X11 License",
+    "license_policy": "link-or-fetch",
+    "license_url": "https://github.com/lunarmodules/lua-iconv/blob/master/COPYING",
+    "license_text_url": "https://raw.githubusercontent.com/lunarmodules/lua-iconv/v7.1.0/COPYING"
+  },
+  "platform_matrix": {
+    "windows-x64": {
+      "support_status": "supported",
+      "build_mode": "generated-override"
+    },
+    "linux-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "linux-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-x64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    },
+    "macos-arm64": {
+      "support_status": "supported",
+      "build_mode": "upstream-luarocks"
+    }
+  }
+}

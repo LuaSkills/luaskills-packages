@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "bundle_id": "official",
-  "bundle_version": "0.1.6",
+  "bundle_version": "0.1.7",
   "bundle_name": {
     "en": "LuaSkills official packages bundle",
     "zh": "LuaSkills 官方包集合"
@@ -36,11 +36,17 @@
     "luasec",
     "lua-curl",
     "lrexlib-pcre2",
+    "lpeg",
     "luaossl",
     "lyaml",
     "lua-toml",
+    "luaexpat",
     "serpent",
-    "lua-zlib"
+    "luautf8",
+    "luatz",
+    "lua-iconv",
+    "lua-zlib",
+    "luazip"
   ],
   "notes": {
     "en": "This bundle tracks the official Lua package set shipped by LuaSkills. Host-specific additions should be expressed as overlays instead of mutating the official bundle in-place.",

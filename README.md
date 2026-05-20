@@ -166,11 +166,17 @@ The initial official bundle metadata covers the package set currently shipped by
 - `luasec`
 - `lua-curl`
 - `lrexlib-pcre2`
+- `lpeg`
 - `luaossl`
 - `lyaml`
 - `lua-toml`
+- `luaexpat`
 - `serpent`
+- `luautf8`
+- `luatz`
+- `lua-iconv`
 - `lua-zlib`
+- `luazip`
 
 ## Package Catalog Vs Runtime Scan
 
