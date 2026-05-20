@@ -19,7 +19,12 @@
     }
   ],
   "legacy_config": {
-    "install": [],
+    "install": [
+      {
+        "os": "windows",
+        "target_ref": "path:dist/luarocks_overrides/windows/luazip-1.2.7-1.rockspec"
+      }
+    ],
     "args": [],
     "env": [],
     "dependencies": [
@@ -99,7 +104,9 @@
       }
     ]
   },
-  "override_rules": {},
+  "override_rules": {
+    "windows": "catalog/overrides/windows/luazip.json"
+  },
   "artifact_kind": "native",
   "license": {
     "spdx_expression": "MIT",
@@ -111,7 +118,7 @@
   "platform_matrix": {
     "windows-x64": {
       "support_status": "supported",
-      "build_mode": "upstream-luarocks"
+      "build_mode": "generated-override"
     },
     "linux-x64": {
       "support_status": "supported",

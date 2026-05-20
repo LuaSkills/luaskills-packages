@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "package_name": "luazip",
+  "os": "windows",
+  "strategy": "template",
+  "template_file": "templates/rockspec/windows/luazip.lua.tpl",
+  "output_name": "luazip-{{version}}.rockspec",
+  "variables": {
+    "version": "1.2.7-1",
+    "source_url": "git+https://github.com/mpeterv/luazip",
+    "source_tag": "1.2.7"
+  }
+}
