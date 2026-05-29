@@ -626,6 +626,4 @@ jobs:
         with:
           files: |
             luaskills-packages-bundle-*.zip
-            dist/platform-support.json
-            dist/platform-support.md
           generate_release_notes: true
