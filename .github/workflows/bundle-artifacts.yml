@@ -64,6 +64,10 @@ jobs:
           python scripts/validate_catalog.py
           python scripts/export_lua_packages_txt.py
           python scripts/render_rockspec_overrides.py
+          python scripts/export_platform_support.py
+          python scripts/export_runtime_bundle_metadata.py
+          python scripts/export_third_party_licenses.py
+          python scripts/fetch_license_texts.py
 
       - name: Checkout luaskills
         uses: actions/checkout@v4
@@ -397,27 +401,40 @@ jobs:
             fi
           done
 
-      - name: Build luaskills (Windows)
+      - name: Build LuaJIT SDK (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          Set-Location luaskills
-          cargo build --release
+          python scripts\build_luajit_sdk.py --platform "${{ matrix.platform }}" --output-dir "third_party\luajit" --luaskills-root "luaskills"
+          if (Test-Path -LiteralPath "luaskills\third_party\luajit") {
+            Remove-Item -LiteralPath "luaskills\third_party\luajit" -Recurse -Force
+          }
+          New-Item -ItemType Directory -Force -Path "luaskills\third_party" | Out-Null
+          Copy-Item -Recurse -Force -LiteralPath "third_party\luajit" -Destination "luaskills\third_party\luajit"
 
-      - name: Build luaskills (Unix)
+      - name: Build LuaJIT SDK (Unix)
         if: runner.os != 'Windows'
         shell: bash
         run: |
           set -euo pipefail
-          cd luaskills
-          cargo build --release
+          python scripts/build_luajit_sdk.py --platform "${{ matrix.platform }}" --output-dir "third_party/luajit" --luaskills-root "luaskills"
+          rm -rf "luaskills/third_party/luajit"
+          mkdir -p "luaskills/third_party"
+          cp -a "third_party/luajit" "luaskills/third_party/luajit"
 
       - name: Install Lua packages (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
           Set-Location luaskills
-          powershell -ExecutionPolicy Bypass -File scripts\install_lua_deps.ps1
+          $installScript = if (Test-Path -LiteralPath "scripts\build\install_lua_deps.ps1") {
+            "scripts\build\install_lua_deps.ps1"
+          } elseif (Test-Path -LiteralPath "scripts\install_lua_deps.ps1") {
+            "scripts\install_lua_deps.ps1"
+          } else {
+            throw "missing install_lua_deps.ps1"
+          }
+          powershell -ExecutionPolicy Bypass -File $installScript
 
       - name: Install Lua packages (Linux)
         if: runner.os == 'Linux'
@@ -425,7 +442,14 @@ jobs:
         run: |
           set -euo pipefail
           cd luaskills
-          bash scripts/install_lua_deps.sh
+          if [ -f scripts/build/install_lua_deps.sh ]; then
+            bash scripts/build/install_lua_deps.sh
+          elif [ -f scripts/install_lua_deps.sh ]; then
+            bash scripts/install_lua_deps.sh
+          else
+            echo "missing install_lua_deps.sh" >&2
+            exit 1
+          fi
 
       - name: Install Lua packages (macOS)
         if: runner.os == 'macOS'
@@ -434,7 +458,14 @@ jobs:
           set -euo pipefail
           brew install bash
           cd luaskills
-          "$(brew --prefix)/bin/bash" scripts/install_lua_deps.sh
+          if [ -f scripts/build/install_lua_deps.sh ]; then
+            "$(brew --prefix)/bin/bash" scripts/build/install_lua_deps.sh
+          elif [ -f scripts/install_lua_deps.sh ]; then
+            "$(brew --prefix)/bin/bash" scripts/install_lua_deps.sh
+          else
+            echo "missing install_lua_deps.sh" >&2
+            exit 1
+          fi
 
       - name: Package lua-deps archive (Windows)
         if: runner.os == 'Windows'
@@ -471,7 +502,14 @@ jobs:
         shell: pwsh
         run: |
           Set-Location luaskills
-          powershell -ExecutionPolicy Bypass -File scripts\package_lua_runtime.ps1 -Platform "${{ matrix.platform }}" -OutputDir "target\release-packages"
+          $packageScript = if (Test-Path -LiteralPath "scripts\build\package_lua_runtime.ps1") {
+            "scripts\build\package_lua_runtime.ps1"
+          } elseif (Test-Path -LiteralPath "scripts\package_lua_runtime.ps1") {
+            "scripts\package_lua_runtime.ps1"
+          } else {
+            throw "missing package_lua_runtime.ps1"
+          }
+          powershell -ExecutionPolicy Bypass -File $packageScript -Platform "${{ matrix.platform }}" -OutputDir "target\release-packages"
           if (-not (Test-Path -LiteralPath "target\release-packages\lua-runtime-${{ matrix.platform }}.tar.gz")) {
             throw "missing runtime package archive"
           }
@@ -482,7 +520,14 @@ jobs:
         run: |
           set -euo pipefail
           cd luaskills
-          bash scripts/package_lua_runtime.sh "${{ matrix.platform }}"
+          if [ -f scripts/build/package_lua_runtime.sh ]; then
+            bash scripts/build/package_lua_runtime.sh "${{ matrix.platform }}"
+          elif [ -f scripts/package_lua_runtime.sh ]; then
+            bash scripts/package_lua_runtime.sh "${{ matrix.platform }}"
+          else
+            echo "missing package_lua_runtime.sh" >&2
+            exit 1
+          fi
           test -f "target/release-packages/lua-runtime-${{ matrix.platform }}.tar.gz"
 
       - name: Export formal runtime packages archive

@@ -23,6 +23,14 @@ CORE_LIBRARY_NAMES = {
     "macos-arm64": ["libluaskills.dylib", "luaskills.dylib"],
 }
 
+LUA_ABI_LIBRARY_PATTERNS = {
+    "windows-x64": ["lua51.dll"],
+    "linux-x64": ["libluajit-5.1.so*", "libluajit.so*"],
+    "linux-arm64": ["libluajit-5.1.so*", "libluajit.so*"],
+    "macos-x64": ["libluajit-5.1*.dylib*", "libluajit.dylib*"],
+    "macos-arm64": ["libluajit-5.1*.dylib*", "libluajit.dylib*"],
+}
+
 
 def write_json(path: Path, value: Any) -> None:
     """Write one JSON file with stable indentation.
@@ -162,6 +170,120 @@ def ensure_runtime_packages_manifest(runtime_root: Path, platform: str) -> None:
     )
 
 
+def copy_path(source: Path, destination: Path) -> None:
+    """Copy one file or directory into a fresh destination path.
+    将单个文件或目录复制到全新的目标路径。
+    """
+
+    if source.is_dir():
+        if destination.exists():
+            shutil.rmtree(destination)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copytree(source, destination)
+        return
+
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, destination)
+
+
+def overlay_runtime_packages_metadata(runtime_root: Path, dist_root: Path) -> list[str]:
+    """Overlay generated catalog metadata into the runtime-facing packages tree.
+    将已生成的 catalog 元数据覆盖进面向运行时的 packages 目录树。
+    """
+
+    if not dist_root.exists():
+        return []
+
+    copied_paths: list[str] = []
+    copy_pairs = [
+        ("lua_packages.txt", "resources/luaskills-packages/lua_packages.txt"),
+        ("install-manifest.json", "resources/luaskills-packages/install-manifest.json"),
+        ("platform-support.json", "resources/luaskills-packages/platform-support.json"),
+        ("THIRD_PARTY_LICENSES.json", "resources/luaskills-packages/THIRD_PARTY_LICENSES.json"),
+        ("THIRD_PARTY_NOTICES.md", "resources/luaskills-packages/THIRD_PARTY_NOTICES.md"),
+        ("help", "resources/luaskills-packages/help"),
+        ("licenses", "licenses/luaskills-packages"),
+    ]
+    for source_name, destination_name in copy_pairs:
+        source = dist_root / source_name
+        if not source.exists():
+            continue
+        destination = runtime_root / destination_name
+        copy_path(source, destination)
+        copied_paths.append(destination_name)
+    return copied_paths
+
+
+def overlay_lua_abi_provider(runtime_root: Path, luajit_root: Path, platform: str) -> list[str]:
+    """Copy the platform Lua ABI provider libraries required by Lua C modules.
+    复制 Lua C 模块所需的平台 Lua ABI 提供库。
+    """
+
+    patterns = LUA_ABI_LIBRARY_PATTERNS.get(platform)
+    if not patterns:
+        raise ValueError(f"unsupported platform for Lua ABI provider overlay: {platform}")
+    if not luajit_root.exists():
+        raise FileNotFoundError(f"LuaJIT SDK directory is missing: {luajit_root}")
+
+    libs_dir = runtime_root / "libs"
+    libs_dir.mkdir(parents=True, exist_ok=True)
+    copied_paths: list[str] = []
+    seen_names: set[str] = set()
+    for pattern in patterns:
+        for source in sorted(luajit_root.glob(pattern)):
+            if not source.is_file() or source.name in seen_names:
+                continue
+            destination = libs_dir / source.name
+            shutil.copy2(source, destination)
+            copied_paths.append(f"libs/{source.name}")
+            seen_names.add(source.name)
+
+    if not copied_paths:
+        raise FileNotFoundError(
+            f"Lua ABI provider library is missing under {luajit_root} for {platform}"
+        )
+    return copied_paths
+
+
+def validate_runtime_relative_path(label: str, relative_path: str) -> None:
+    """Validate one manifest path before resolving it under the runtime root.
+    在运行时根目录下解析前校验单个清单路径。
+    """
+
+    candidate = Path(relative_path)
+    if candidate.is_absolute():
+        raise ValueError(f"runtime packages manifest path must be relative: {label}={relative_path}")
+    if not candidate.parts:
+        raise ValueError(f"runtime packages manifest path must not be empty: {label}")
+    if ".." in candidate.parts:
+        raise ValueError(f"runtime packages manifest path must not traverse parents: {label}={relative_path}")
+
+
+def validate_runtime_packages_manifest_targets(runtime_root: Path) -> None:
+    """Validate that every path declared by the packages manifest exists.
+    校验 packages 清单声明的每一个路径都真实存在。
+    """
+
+    manifest_path = runtime_root / "resources" / "luaskills-packages-manifest.json"
+    manifest = read_json(manifest_path)
+    if manifest.get("schema_version") != 1:
+        raise ValueError(f"unsupported luaskills-packages manifest schema_version in {manifest_path}")
+    if manifest.get("layout") != "luaskills-packages-runtime-v1":
+        raise ValueError(f"unsupported luaskills-packages manifest layout in {manifest_path}")
+
+    paths = manifest.get("paths")
+    if not isinstance(paths, dict):
+        raise ValueError(f"luaskills-packages manifest paths must be an object: {manifest_path}")
+
+    for label, relative_path in paths.items():
+        if not isinstance(relative_path, str):
+            raise ValueError(f"luaskills-packages manifest path must be a string: {label}")
+        validate_runtime_relative_path(label, relative_path)
+        target = runtime_root / relative_path
+        if not target.exists():
+            raise FileNotFoundError(f"runtime packages manifest target is missing: {relative_path}")
+
+
 def rewrite_bundled_libs(runtime_root: Path, removed_paths: list[str]) -> None:
     """Drop core runtime library entries from bundled-libs metadata when present.
     在 bundled-libs 元数据存在时移除 core runtime 库条目。
@@ -236,6 +358,7 @@ def export_runtime_packages_archive(source_archive: Path, platform: str, output_
     with tempfile.TemporaryDirectory(prefix="luaskills-runtime-packages-") as temporary_root:
         extracted_root = Path(temporary_root)
         extract_runtime_archive(source_archive, extracted_root)
+        dist_root = Path(__file__).resolve().parents[1] / "dist"
 
         required_paths = [
             extracted_root / "lua_packages",
@@ -247,12 +370,19 @@ def export_runtime_packages_archive(source_archive: Path, platform: str, output_
             if not required.exists():
                 raise FileNotFoundError(f"runtime archive is missing required path: {required.relative_to(extracted_root)}")
         ensure_runtime_packages_manifest(extracted_root, platform)
+        metadata_overlay_paths = overlay_runtime_packages_metadata(extracted_root, dist_root)
+        lua_abi_overlay_paths = overlay_lua_abi_provider(
+            extracted_root,
+            Path(__file__).resolve().parents[1] / "third_party" / "luajit",
+            platform,
+        )
 
         removed_paths = remove_core_runtime_bits(extracted_root, platform)
         removed_paths.extend(remove_core_runtime_licenses(extracted_root))
         manifest_payload = rewrite_runtime_manifest(extracted_root, platform)
         rewrite_bundled_libs(extracted_root, removed_paths)
         rewrite_license_manifest(extracted_root, platform)
+        validate_runtime_packages_manifest_targets(extracted_root)
         create_archive_from_runtime(extracted_root, archive_path)
 
     sha256_text = file_sha256(archive_path)
@@ -267,6 +397,8 @@ def export_runtime_packages_archive(source_archive: Path, platform: str, output_
             "output_archive": archive_path.name,
             "source_package_name": manifest_payload.get("generated_from", {}).get("package_name", ""),
             "removed_paths": removed_paths,
+            "metadata_overlay_paths": metadata_overlay_paths,
+            "lua_abi_overlay_paths": lua_abi_overlay_paths,
         },
     )
     return archive_path, sha256_path, generated_from_path
