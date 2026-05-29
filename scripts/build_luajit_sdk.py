@@ -9,6 +9,7 @@ import os
 import re
 import shutil
 import subprocess
+import tempfile
 import textwrap
 from pathlib import Path
 
@@ -450,22 +451,50 @@ def ensure_luajit_interpreter_aliases(output_dir: Path, platform: str) -> list[s
     return created
 
 
-def ensure_unix_luajit_runtime_library(target_dir: Path, platform: str) -> None:
-    """Build a dynamic LuaJIT runtime library when Cargo only produced static artifacts.
-    当 Cargo 仅产出静态产物时构建动态 LuaJIT 运行时库。
+def copy_unix_luajit_runtime_libraries(source_dir: Path, output_dir: Path) -> list[str]:
+    """Copy dynamic LuaJIT runtime libraries from one build source directory.
+    从单个构建源码目录复制动态 LuaJIT 运行时库。
     """
 
-    if has_runtime_library(target_dir, platform):
-        return
+    copied: list[str] = []
+    seen_names: set[str] = set()
+    patterns = ["libluajit-5.1.so*", "libluajit.so*", "libluajit-5.1*.dylib*", "libluajit.dylib*"]
+    for source in find_files_by_patterns(source_dir, patterns):
+        if source.name in seen_names:
+            continue
+        destination = output_dir / source.name
+        shutil.copy2(source, destination)
+        copied.append(source.name)
+        seen_names.add(source.name)
+    return copied
+
+
+def ensure_unix_luajit_runtime_library(target_dir: Path, output_dir: Path, platform: str) -> list[str]:
+    """Build a dynamic LuaJIT runtime library in an isolated source copy when Cargo only produced static artifacts.
+    当 Cargo 仅产出静态产物时，在隔离的源码副本中构建动态 LuaJIT 运行时库。
+    """
+
+    if has_runtime_library(output_dir, platform):
+        return []
 
     source_dir = find_newest_luajit_source_dir(target_dir)
     if source_dir is None:
         raise FileNotFoundError(f"LuaJIT source directory was not found under {target_dir}")
-    run_unix_luajit_dynamic_build(source_dir, platform)
-    if not has_runtime_library(target_dir, platform):
-        raise FileNotFoundError(
-            f"LuaJIT dynamic rebuild did not produce a runtime ABI provider for {platform}"
+
+    with tempfile.TemporaryDirectory(prefix="luaskills-luajit-dynamic-") as temp_root:
+        scratch_build_root = Path(temp_root) / "luajit-build"
+        shutil.copytree(
+            source_dir.parent,
+            scratch_build_root,
+            ignore=shutil.ignore_patterns("*.o", "*.a", "*.so*", "*.dylib*", "luajit"),
         )
+        scratch_source = scratch_build_root / "src"
+        run_unix_luajit_dynamic_build(scratch_source, platform)
+        copied = copy_unix_luajit_runtime_libraries(scratch_source, output_dir)
+
+    if not has_runtime_library(output_dir, platform):
+        raise FileNotFoundError(f"LuaJIT dynamic rebuild did not produce a runtime ABI provider for {platform}")
+    return copied
 
 
 def copy_builder_artifacts(target_dir: Path, output_dir: Path, platform: str) -> list[str]:
@@ -476,8 +505,6 @@ def copy_builder_artifacts(target_dir: Path, output_dir: Path, platform: str) ->
     output_dir.mkdir(parents=True, exist_ok=True)
     if platform == "windows-x64":
         ensure_windows_lua51_dll(target_dir)
-    else:
-        ensure_unix_luajit_runtime_library(target_dir, platform)
 
     copied: list[str] = []
     seen_names: set[str] = set()
@@ -488,6 +515,9 @@ def copy_builder_artifacts(target_dir: Path, output_dir: Path, platform: str) ->
         shutil.copy2(source, destination)
         copied.append(source.name)
         seen_names.add(source.name)
+
+    if platform != "windows-x64":
+        copied.extend(ensure_unix_luajit_runtime_library(target_dir, output_dir, platform))
 
     if not has_runtime_library(output_dir, platform):
         raise FileNotFoundError(
