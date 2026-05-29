@@ -409,15 +409,6 @@ jobs:
           if (Test-Path -LiteralPath "luaskills\third_party\luajit") {
             Remove-Item -LiteralPath "luaskills\third_party\luajit" -Recurse -Force
           }
-          New-Item -ItemType Directory -Force -Path "luaskills\third_party\luajit" | Out-Null
-          Copy-Item -Recurse -Force -LiteralPath "third_party\luajit\*" -Destination "luaskills\third_party\luajit"
-          if ((Test-Path -LiteralPath "luaskills\third_party\luajit\luajit.exe") -and -not (Test-Path -LiteralPath "luaskills\third_party\luajit\lua.exe")) {
-            Copy-Item -LiteralPath "luaskills\third_party\luajit\luajit.exe" -Destination "luaskills\third_party\luajit\lua.exe" -Force
-          }
-          if ((Test-Path -LiteralPath "luaskills\third_party\luajit\luajit.exe") -and -not (Test-Path -LiteralPath "luaskills\third_party\luajit\lua5.1.exe")) {
-            Copy-Item -LiteralPath "luaskills\third_party\luajit\luajit.exe" -Destination "luaskills\third_party\luajit\lua5.1.exe" -Force
-          }
-          Get-ChildItem -LiteralPath "luaskills\third_party\luajit" | Select-Object -ExpandProperty Name
 
       - name: Build LuaJIT SDK (Unix)
         if: runner.os != 'Windows'
@@ -426,17 +417,6 @@ jobs:
           set -euo pipefail
           python scripts/build_luajit_sdk.py --platform "${{ matrix.platform }}" --output-dir "third_party/luajit" --luaskills-root "luaskills"
           rm -rf "luaskills/third_party/luajit"
-          mkdir -p "luaskills/third_party/luajit"
-          cp -a "third_party/luajit/." "luaskills/third_party/luajit/"
-          if [ -f "luaskills/third_party/luajit/luajit" ]; then
-            [ -f "luaskills/third_party/luajit/lua" ] || cp "luaskills/third_party/luajit/luajit" "luaskills/third_party/luajit/lua"
-            [ -f "luaskills/third_party/luajit/lua5.1" ] || cp "luaskills/third_party/luajit/luajit" "luaskills/third_party/luajit/lua5.1"
-            mkdir -p "luaskills/third_party/luajit/bin"
-            [ -f "luaskills/third_party/luajit/bin/lua" ] || cp "luaskills/third_party/luajit/luajit" "luaskills/third_party/luajit/bin/lua"
-            [ -f "luaskills/third_party/luajit/bin/lua5.1" ] || cp "luaskills/third_party/luajit/luajit" "luaskills/third_party/luajit/bin/lua5.1"
-            chmod +x "luaskills/third_party/luajit/luajit" "luaskills/third_party/luajit/lua" "luaskills/third_party/luajit/lua5.1" "luaskills/third_party/luajit/bin/lua" "luaskills/third_party/luajit/bin/lua5.1"
-          fi
-          find "luaskills/third_party/luajit" -maxdepth 2 -type f | sort
 
       - name: Install Lua packages (Windows)
         if: runner.os == 'Windows'

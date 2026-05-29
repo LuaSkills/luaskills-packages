@@ -120,16 +120,16 @@ def write_builder_crate(builder_root: Path, mlua_dependency_line: str) -> Path:
     return builder_root / "Cargo.toml"
 
 
-def run_cargo_build(builder_manifest: Path, profile: str) -> Path:
-    """Run Cargo for the tiny LuaJIT builder crate and return its target directory.
-    运行极小 LuaJIT builder crate 的 Cargo 构建并返回其 target 目录。
+def run_cargo_build(builder_manifest: Path, profile: str, target_dir: Path) -> Path:
+    """Run Cargo for the tiny LuaJIT builder crate into the luaskills target directory.
+    将极小 LuaJIT builder crate 的 Cargo 构建输出写入 luaskills 的 target 目录。
     """
 
-    command = ["cargo", "build", "--manifest-path", str(builder_manifest)]
+    command = ["cargo", "build", "--manifest-path", str(builder_manifest), "--target-dir", str(target_dir)]
     if profile == "release":
         command.append("--release")
     subprocess.run(command, cwd=builder_manifest.parent, check=True)
-    return builder_manifest.parent / "target"
+    return target_dir
 
 
 def find_newest_file(root: Path, names: set[str]) -> Path | None:
@@ -528,7 +528,7 @@ def main() -> int:
 
     print(f"Using mlua dependency from {luaskills_root / 'Cargo.toml'}")
     print(f"mlua dependency: {mlua_dependency_line}")
-    target_dir = run_cargo_build(builder_manifest, args.profile)
+    target_dir = run_cargo_build(builder_manifest, args.profile, luaskills_root / "target")
     header_dir = find_newest_header_dir(target_dir)
     if header_dir is None:
         raise FileNotFoundError(f"LuaJIT headers were not found under {target_dir}")
