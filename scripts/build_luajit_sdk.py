@@ -30,8 +30,8 @@ RUNTIME_LIBRARY_PATTERNS = {
     "windows-x64": ["lua51.dll"],
     "linux-x64": ["libluajit-5.1.so*", "libluajit.so*"],
     "linux-arm64": ["libluajit-5.1.so*", "libluajit.so*"],
-    "macos-x64": ["libluajit-5.1*.dylib*", "libluajit.dylib*"],
-    "macos-arm64": ["libluajit-5.1*.dylib*", "libluajit.dylib*"],
+    "macos-x64": ["libluajit-5.1*.dylib*", "libluajit.dylib*", "libluajit.so*"],
+    "macos-arm64": ["libluajit-5.1*.dylib*", "libluajit.dylib*", "libluajit.so*"],
 }
 
 
@@ -391,6 +391,65 @@ def ensure_linux_soname_aliases(output_dir: Path) -> list[str]:
     return created
 
 
+def ensure_macos_dylib_aliases(output_dir: Path) -> list[str]:
+    """Create macOS dylib compatibility aliases when LuaJIT emits a so-named Mach-O library.
+    当 LuaJIT 产出 so 命名的 Mach-O 库时创建 macOS dylib 兼容别名。
+    """
+
+    source = next(iter(output_dir.glob("libluajit.so*")), None)
+    if source is None:
+        return []
+
+    alias_names = ["libluajit.dylib", "libluajit-5.1.dylib"]
+    created: list[str] = []
+    for alias_name in alias_names:
+        destination = output_dir / alias_name
+        if destination.exists():
+            continue
+        shutil.copy2(source, destination)
+        created.append(alias_name)
+    return created
+
+
+def copy_file_alias(source: Path, destination: Path) -> bool:
+    """Copy one file alias when it does not already exist.
+    在目标文件尚不存在时复制一个文件别名。
+    """
+
+    if destination.exists():
+        return False
+    shutil.copy2(source, destination)
+    return True
+
+
+def ensure_luajit_interpreter_aliases(output_dir: Path, platform: str) -> list[str]:
+    """Create Lua interpreter aliases expected by LuaRocks configure probes.
+    创建 LuaRocks configure 探测所期望的 Lua 解释器别名。
+    """
+
+    if platform == "windows-x64":
+        interpreter = output_dir / "luajit.exe"
+        alias_names = ["lua.exe", "lua5.1.exe"]
+    else:
+        interpreter = output_dir / "luajit"
+        alias_names = ["lua", "lua5.1"]
+
+    if not interpreter.exists():
+        return []
+
+    bin_dir = output_dir / "bin"
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    created: list[str] = []
+    for alias_name in alias_names:
+        root_alias = output_dir / alias_name
+        bin_alias = bin_dir / alias_name
+        if copy_file_alias(interpreter, root_alias):
+            created.append(alias_name)
+        if copy_file_alias(interpreter, bin_alias):
+            created.append(f"bin/{alias_name}")
+    return created
+
+
 def ensure_unix_luajit_runtime_library(target_dir: Path, platform: str) -> None:
     """Build a dynamic LuaJIT runtime library when Cargo only produced static artifacts.
     当 Cargo 仅产出静态产物时构建动态 LuaJIT 运行时库。
@@ -436,6 +495,9 @@ def copy_builder_artifacts(target_dir: Path, output_dir: Path, platform: str) ->
         )
     if platform.startswith("linux-"):
         copied.extend(ensure_linux_soname_aliases(output_dir))
+    if platform.startswith("macos-"):
+        copied.extend(ensure_macos_dylib_aliases(output_dir))
+    copied.extend(ensure_luajit_interpreter_aliases(output_dir, platform))
     return copied
 
 

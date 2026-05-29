@@ -484,8 +484,6 @@ jobs:
           } finally {
             Pop-Location
           }
-          $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $archivePath).Hash.ToLowerInvariant()
-          "$hash  $(Split-Path -Leaf $archivePath)" | Set-Content -Path "$archivePath.sha256" -Encoding ascii
 
       - name: Package lua-deps archive (Unix)
         if: runner.os != 'Windows'
@@ -495,7 +493,6 @@ jobs:
           cd luaskills
           mkdir -p target/release-packages
           tar -czf "target/release-packages/lua-deps-${{ matrix.platform }}.tar.gz" -C third_party/deps openssl curl zlib pcre2 libyaml expat zzip
-          (cd target/release-packages && sha256sum "lua-deps-${{ matrix.platform }}.tar.gz" > "lua-deps-${{ matrix.platform }}.tar.gz.sha256")
 
       - name: Package runtime (Windows)
         if: runner.os == 'Windows'
@@ -545,9 +542,7 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path validation-release | Out-Null
           Copy-Item -LiteralPath "luaskills\target\release-packages\lua-deps-${{ matrix.platform }}.tar.gz" -Destination "validation-release\lua-deps-${{ matrix.platform }}.tar.gz" -Force
-          Copy-Item -LiteralPath "luaskills\target\release-packages\lua-deps-${{ matrix.platform }}.tar.gz.sha256" -Destination "validation-release\lua-deps-${{ matrix.platform }}.tar.gz.sha256" -Force
           Copy-Item -LiteralPath "luaskills\target\release-packages\lua-runtime-packages-${{ matrix.platform }}.tar.gz" -Destination "validation-release\lua-runtime-packages-${{ matrix.platform }}.tar.gz" -Force
-          Copy-Item -LiteralPath "luaskills\target\release-packages\lua-runtime-packages-${{ matrix.platform }}.tar.gz.sha256" -Destination "validation-release\lua-runtime-packages-${{ matrix.platform }}.tar.gz.sha256" -Force
           Copy-Item -LiteralPath "luaskills\target\release-packages\lua-runtime-packages-${{ matrix.platform }}.generated-from.json" -Destination "validation-release\lua-runtime-packages-${{ matrix.platform }}.generated-from.json" -Force
           Copy-Item -LiteralPath "luaskills\target\release-packages\lua-runtime-${{ matrix.platform }}.tar.gz" -Destination "validation-release\runtime-validation-${{ matrix.platform }}.tar.gz" -Force
           Copy-Item -LiteralPath "luaskills\scripts\lua_packages.generated-from.json" -Destination "validation-release\runtime-validation-${{ matrix.platform }}.generated-from.json" -Force
@@ -559,9 +554,7 @@ jobs:
           set -euo pipefail
           mkdir -p validation-release
           cp "luaskills/target/release-packages/lua-deps-${{ matrix.platform }}.tar.gz" "validation-release/lua-deps-${{ matrix.platform }}.tar.gz"
-          cp "luaskills/target/release-packages/lua-deps-${{ matrix.platform }}.tar.gz.sha256" "validation-release/lua-deps-${{ matrix.platform }}.tar.gz.sha256"
           cp "luaskills/target/release-packages/lua-runtime-packages-${{ matrix.platform }}.tar.gz" "validation-release/lua-runtime-packages-${{ matrix.platform }}.tar.gz"
-          cp "luaskills/target/release-packages/lua-runtime-packages-${{ matrix.platform }}.tar.gz.sha256" "validation-release/lua-runtime-packages-${{ matrix.platform }}.tar.gz.sha256"
           cp "luaskills/target/release-packages/lua-runtime-packages-${{ matrix.platform }}.generated-from.json" "validation-release/lua-runtime-packages-${{ matrix.platform }}.generated-from.json"
           cp "luaskills/target/release-packages/lua-runtime-${{ matrix.platform }}.tar.gz" "validation-release/runtime-validation-${{ matrix.platform }}.tar.gz"
           cp "luaskills/scripts/lua_packages.generated-from.json" "validation-release/runtime-validation-${{ matrix.platform }}.generated-from.json"
@@ -572,9 +565,7 @@ jobs:
           name: luaskills-runtime-validation-${{ matrix.platform }}
           path: |
             validation-release/lua-deps-${{ matrix.platform }}.tar.gz
-            validation-release/lua-deps-${{ matrix.platform }}.tar.gz.sha256
             validation-release/lua-runtime-packages-${{ matrix.platform }}.tar.gz
-            validation-release/lua-runtime-packages-${{ matrix.platform }}.tar.gz.sha256
             validation-release/lua-runtime-packages-${{ matrix.platform }}.generated-from.json
             validation-release/runtime-validation-${{ matrix.platform }}.tar.gz
             validation-release/runtime-validation-${{ matrix.platform }}.generated-from.json
@@ -585,9 +576,7 @@ jobs:
         with:
           files: |
             validation-release/lua-deps-${{ matrix.platform }}.tar.gz
-            validation-release/lua-deps-${{ matrix.platform }}.tar.gz.sha256
             validation-release/lua-runtime-packages-${{ matrix.platform }}.tar.gz
-            validation-release/lua-runtime-packages-${{ matrix.platform }}.tar.gz.sha256
             validation-release/lua-runtime-packages-${{ matrix.platform }}.generated-from.json
             validation-release/runtime-validation-${{ matrix.platform }}.tar.gz
             validation-release/runtime-validation-${{ matrix.platform }}.generated-from.json
@@ -634,7 +623,6 @@ jobs:
           cd dist
           zip -r "../${bundle_name}.zip" .
           cd ..
-          sha256sum "${bundle_name}.zip" > "${bundle_name}.sha256"
 
       - name: Upload bundle artifacts
         uses: actions/upload-artifact@v4
@@ -643,7 +631,6 @@ jobs:
           path: |
             dist/
             luaskills-packages-bundle-*.zip
-            luaskills-packages-bundle-*.sha256
 
       - name: Publish release assets
         if: startsWith(github.ref, 'refs/tags/')
@@ -651,7 +638,6 @@ jobs:
         with:
           files: |
             luaskills-packages-bundle-*.zip
-            luaskills-packages-bundle-*.sha256
             dist/platform-support.json
             dist/platform-support.md
             dist/THIRD_PARTY_LICENSES.json

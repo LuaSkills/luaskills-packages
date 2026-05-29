@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import shutil
 import tarfile
@@ -27,8 +26,8 @@ LUA_ABI_LIBRARY_PATTERNS = {
     "windows-x64": ["lua51.dll"],
     "linux-x64": ["libluajit-5.1.so*", "libluajit.so*"],
     "linux-arm64": ["libluajit-5.1.so*", "libluajit.so*"],
-    "macos-x64": ["libluajit-5.1*.dylib*", "libluajit.dylib*"],
-    "macos-arm64": ["libluajit-5.1*.dylib*", "libluajit.dylib*"],
+    "macos-x64": ["libluajit-5.1*.dylib*", "libluajit.dylib*", "libluajit.so*"],
+    "macos-arm64": ["libluajit-5.1*.dylib*", "libluajit.dylib*", "libluajit.so*"],
 }
 
 
@@ -47,18 +46,6 @@ def read_json(path: Path) -> Any:
     """
 
     return json.loads(path.read_text(encoding="utf-8-sig"))
-
-
-def file_sha256(path: Path) -> str:
-    """Compute the SHA-256 hash for one file.
-    计算单个文件的 SHA-256 哈希。
-    """
-
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def validate_member_path(member_name: str) -> None:
@@ -345,15 +332,14 @@ def create_archive_from_runtime(runtime_root: Path, archive_path: Path) -> None:
             archive.add(child, arcname=child.name)
 
 
-def export_runtime_packages_archive(source_archive: Path, platform: str, output_dir: Path) -> tuple[Path, Path, Path]:
-    """Export one formal packages runtime archive and its metadata sidecars.
-    导出一个正式的 packages runtime 归档及其旁路元数据文件。
+def export_runtime_packages_archive(source_archive: Path, platform: str, output_dir: Path) -> tuple[Path, Path]:
+    """Export one formal packages runtime archive and its generation metadata.
+    导出一个正式的 packages runtime 归档及其生成来源元数据。
     """
 
     archive_name = f"lua-runtime-packages-{platform}.tar.gz"
     archive_path = output_dir / archive_name
     generated_from_path = output_dir / f"lua-runtime-packages-{platform}.generated-from.json"
-    sha256_path = output_dir / f"{archive_name}.sha256"
 
     with tempfile.TemporaryDirectory(prefix="luaskills-runtime-packages-") as temporary_root:
         extracted_root = Path(temporary_root)
@@ -385,8 +371,6 @@ def export_runtime_packages_archive(source_archive: Path, platform: str, output_
         validate_runtime_packages_manifest_targets(extracted_root)
         create_archive_from_runtime(extracted_root, archive_path)
 
-    sha256_text = file_sha256(archive_path)
-    sha256_path.write_text(f"{sha256_text}  {archive_path.name}\n", encoding="ascii")
     write_json(
         generated_from_path,
         {
@@ -401,7 +385,7 @@ def export_runtime_packages_archive(source_archive: Path, platform: str, output_
             "lua_abi_overlay_paths": lua_abi_overlay_paths,
         },
     )
-    return archive_path, sha256_path, generated_from_path
+    return archive_path, generated_from_path
 
 
 def parse_args() -> argparse.Namespace:
@@ -422,7 +406,7 @@ def main() -> int:
     """
 
     args = parse_args()
-    archive_path, _, _ = export_runtime_packages_archive(
+    archive_path, _ = export_runtime_packages_archive(
         source_archive=Path(args.source_archive).resolve(),
         platform=args.platform,
         output_dir=Path(args.output_dir).resolve(),
