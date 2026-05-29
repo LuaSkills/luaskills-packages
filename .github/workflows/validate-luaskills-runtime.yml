@@ -450,4 +450,3 @@ jobs:
           name: luaskills-runtime-validation-${{ matrix.platform }}
           path: |
             luaskills/target/release-packages/lua-runtime-${{ matrix.platform }}.tar.gz
-            luaskills/scripts/lua_packages.generated-from.json

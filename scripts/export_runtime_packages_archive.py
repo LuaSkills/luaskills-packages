@@ -332,14 +332,13 @@ def create_archive_from_runtime(runtime_root: Path, archive_path: Path) -> None:
             archive.add(child, arcname=child.name)
 
 
-def export_runtime_packages_archive(source_archive: Path, platform: str, output_dir: Path) -> tuple[Path, Path]:
-    """Export one formal packages runtime archive and its generation metadata.
-    导出一个正式的 packages runtime 归档及其生成来源元数据。
+def export_runtime_packages_archive(source_archive: Path, platform: str, output_dir: Path) -> Path:
+    """Export one formal packages runtime archive.
+    导出一个正式的 packages runtime 归档。
     """
 
     archive_name = f"lua-runtime-packages-{platform}.tar.gz"
     archive_path = output_dir / archive_name
-    generated_from_path = output_dir / f"lua-runtime-packages-{platform}.generated-from.json"
 
     with tempfile.TemporaryDirectory(prefix="luaskills-runtime-packages-") as temporary_root:
         extracted_root = Path(temporary_root)
@@ -365,27 +364,13 @@ def export_runtime_packages_archive(source_archive: Path, platform: str, output_
 
         removed_paths = remove_core_runtime_bits(extracted_root, platform)
         removed_paths.extend(remove_core_runtime_licenses(extracted_root))
-        manifest_payload = rewrite_runtime_manifest(extracted_root, platform)
+        rewrite_runtime_manifest(extracted_root, platform)
         rewrite_bundled_libs(extracted_root, removed_paths)
         rewrite_license_manifest(extracted_root, platform)
         validate_runtime_packages_manifest_targets(extracted_root)
         create_archive_from_runtime(extracted_root, archive_path)
 
-    write_json(
-        generated_from_path,
-        {
-            "schema_version": 1,
-            "platform": platform,
-            "source_repository": "LuaSkills/luaskills",
-            "source_archive": source_archive.name,
-            "output_archive": archive_path.name,
-            "source_package_name": manifest_payload.get("generated_from", {}).get("package_name", ""),
-            "removed_paths": removed_paths,
-            "metadata_overlay_paths": metadata_overlay_paths,
-            "lua_abi_overlay_paths": lua_abi_overlay_paths,
-        },
-    )
-    return archive_path, generated_from_path
+    return archive_path
 
 
 def parse_args() -> argparse.Namespace:
@@ -406,7 +391,7 @@ def main() -> int:
     """
 
     args = parse_args()
-    archive_path, _ = export_runtime_packages_archive(
+    archive_path = export_runtime_packages_archive(
         source_archive=Path(args.source_archive).resolve(),
         platform=args.platform,
         output_dir=Path(args.output_dir).resolve(),

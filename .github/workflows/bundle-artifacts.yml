@@ -539,9 +539,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path validation-release | Out-Null
           Copy-Item -LiteralPath "luaskills\target\release-packages\lua-deps-${{ matrix.platform }}.tar.gz" -Destination "validation-release\lua-deps-${{ matrix.platform }}.tar.gz" -Force
           Copy-Item -LiteralPath "luaskills\target\release-packages\lua-runtime-packages-${{ matrix.platform }}.tar.gz" -Destination "validation-release\lua-runtime-packages-${{ matrix.platform }}.tar.gz" -Force
-          Copy-Item -LiteralPath "luaskills\target\release-packages\lua-runtime-packages-${{ matrix.platform }}.generated-from.json" -Destination "validation-release\lua-runtime-packages-${{ matrix.platform }}.generated-from.json" -Force
           Copy-Item -LiteralPath "luaskills\target\release-packages\lua-runtime-${{ matrix.platform }}.tar.gz" -Destination "validation-release\runtime-validation-${{ matrix.platform }}.tar.gz" -Force
-          Copy-Item -LiteralPath "luaskills\scripts\lua_packages.generated-from.json" -Destination "validation-release\runtime-validation-${{ matrix.platform }}.generated-from.json" -Force
 
       - name: Prepare validation release assets (Unix)
         if: runner.os != 'Windows'
@@ -551,9 +549,7 @@ jobs:
           mkdir -p validation-release
           cp "luaskills/target/release-packages/lua-deps-${{ matrix.platform }}.tar.gz" "validation-release/lua-deps-${{ matrix.platform }}.tar.gz"
           cp "luaskills/target/release-packages/lua-runtime-packages-${{ matrix.platform }}.tar.gz" "validation-release/lua-runtime-packages-${{ matrix.platform }}.tar.gz"
-          cp "luaskills/target/release-packages/lua-runtime-packages-${{ matrix.platform }}.generated-from.json" "validation-release/lua-runtime-packages-${{ matrix.platform }}.generated-from.json"
           cp "luaskills/target/release-packages/lua-runtime-${{ matrix.platform }}.tar.gz" "validation-release/runtime-validation-${{ matrix.platform }}.tar.gz"
-          cp "luaskills/scripts/lua_packages.generated-from.json" "validation-release/runtime-validation-${{ matrix.platform }}.generated-from.json"
 
       - name: Upload validation runtime archive
         uses: actions/upload-artifact@v4
@@ -562,9 +558,7 @@ jobs:
           path: |
             validation-release/lua-deps-${{ matrix.platform }}.tar.gz
             validation-release/lua-runtime-packages-${{ matrix.platform }}.tar.gz
-            validation-release/lua-runtime-packages-${{ matrix.platform }}.generated-from.json
             validation-release/runtime-validation-${{ matrix.platform }}.tar.gz
-            validation-release/runtime-validation-${{ matrix.platform }}.generated-from.json
 
       - name: Publish validation release assets
         if: startsWith(github.ref, 'refs/tags/')
@@ -573,9 +567,7 @@ jobs:
           files: |
             validation-release/lua-deps-${{ matrix.platform }}.tar.gz
             validation-release/lua-runtime-packages-${{ matrix.platform }}.tar.gz
-            validation-release/lua-runtime-packages-${{ matrix.platform }}.generated-from.json
             validation-release/runtime-validation-${{ matrix.platform }}.tar.gz
-            validation-release/runtime-validation-${{ matrix.platform }}.generated-from.json
           generate_release_notes: false
 
   export:

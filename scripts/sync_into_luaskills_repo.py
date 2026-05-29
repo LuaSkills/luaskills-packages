@@ -88,24 +88,6 @@ def sync_generated_inputs(luaskills_root: Path) -> None:
         for source_path in sorted(override_source_root.glob("*.rockspec")):
             copy_file(source_path, override_destination_root / source_path.name)
 
-    provenance_payload = {
-        "schema_version": 1,
-        "source_repository": "LuaSkills/luaskills-packages",
-        "bundle_id": bundle["bundle_id"],
-        "bundle_version": bundle["bundle_version"],
-        "resolved_tag": f"v{bundle['bundle_version']}",
-        "generated_files": {
-            "lua_packages_txt": str(lua_packages_source.relative_to(packages_root)).replace("\\", "/"),
-            "windows_override_directory": str(override_source_root.relative_to(packages_root)).replace("\\", "/")
-            if override_source_root.exists()
-            else None,
-        },
-    }
-    write_text(
-        luaskills_scripts_dir / "lua_packages.generated-from.json",
-        json.dumps(provenance_payload, ensure_ascii=False, indent=2) + "\n",
-    )
-
     active_bundle_state = build_active_bundle_state(packages_root, bundle, dist_root)
     write_text(
         luaskills_root / "target" / "runtime-packages" / "active.json",
