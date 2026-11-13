@@ -75,9 +75,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: LuaSkills/luaskills
-          # Linux needs the source build scripts used by the v0.1.8 package pipeline.
-          # Linux 需要 v0.1.8 包流水线使用的源码构建脚本。
-          ref: ${{ runner.os == 'Linux' && 'acd1236e977e06a5cbc225c1b1dc1c4ca8bb70f7' || 'main' }}
+          # This source revision supplies the package-building scripts for every platform.
+          # 此源码版本提供所有平台的包构建脚本。
+          ref: acd1236e977e06a5cbc225c1b1dc1c4ca8bb70f7
           path: luaskills
 
       - name: Setup Rust 1.94
@@ -566,16 +566,6 @@ jobs:
             validation-release/lua-runtime-packages-${{ matrix.platform }}.tar.gz
             validation-release/runtime-validation-${{ matrix.platform }}.tar.gz
 
-      - name: Publish validation release assets
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v3
-        with:
-          files: |
-            validation-release/lua-deps-${{ matrix.platform }}.tar.gz
-            validation-release/lua-runtime-packages-${{ matrix.platform }}.tar.gz
-            validation-release/runtime-validation-${{ matrix.platform }}.tar.gz
-          generate_release_notes: false
-
   export:
     name: Export bundle after runtime validation
     needs:
@@ -626,10 +616,18 @@ jobs:
             dist/
             luaskills-packages-bundle-*.zip
 
-      - name: Publish release assets
+      # A release is visible to package consumers only after every platform has been built and uploaded.
+      # 只有在全部平台构建并上传完成后，包使用方才能看到此发布。
+      - name: Download all runtime assets
         if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v3
+        uses: actions/download-artifact@v4
         with:
-          files: |
-            luaskills-packages-bundle-*.zip
-          generate_release_notes: true
+          pattern: luaskills-runtime-validation-*
+          path: validation-release
+          merge-multiple: true
+
+      - name: Publish complete release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --verify-tag --generate-notes luaskills-packages-bundle-*.zip validation-release/*.tar.gz
