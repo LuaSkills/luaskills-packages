@@ -7,7 +7,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
+import subprocess
 import tarfile
 import tempfile
 from pathlib import Path
@@ -321,6 +323,30 @@ def remove_core_runtime_licenses(runtime_root: Path) -> list[str]:
     return removed
 
 
+def relocate_linux_native_libraries(runtime_root: Path) -> None:
+    """Point ELF libraries at bundled dependencies relative to their own location.
+    让 ELF 库按自身位置相对查找随包依赖。
+
+    runtime_root is the extracted package tree. Returns after all ELF files are updated.
+    runtime_root 是解压后的包目录。更新全部 ELF 文件后返回。
+    """
+    # libraries is the common dependency directory, including aliases used by ELF SONAMEs.
+    # libraries 是公共依赖目录，包含 ELF SONAME 使用的别名。
+    libraries = runtime_root / "libs"
+    for directory in (libraries, runtime_root / "lua_packages" / "lib" / "lua"):
+        for binary in sorted(directory.rglob("*")):
+            if binary.is_symlink() or not binary.is_file():
+                continue
+            with binary.open("rb") as stream:
+                if stream.read(4) != b"\x7fELF":
+                    continue
+            # RUNPATH applies only to direct dependencies, so set it on libraries and modules alike.
+            # RUNPATH 只用于直接依赖，因此共享库和模块都要各自设置。
+            relative_libraries = os.path.relpath(libraries, binary.parent)
+            runpath = "$ORIGIN" if relative_libraries == "." else f"$ORIGIN/{relative_libraries}"
+            subprocess.run(["patchelf", "--set-rpath", runpath, str(binary)], check=True)
+
+
 def create_archive_from_runtime(runtime_root: Path, archive_path: Path) -> None:
     """Create one tar.gz archive from the transformed runtime tree.
     从转换后的 runtime 树创建一个 tar.gz 归档。
@@ -368,6 +394,8 @@ def export_runtime_packages_archive(source_archive: Path, platform: str, output_
         rewrite_bundled_libs(extracted_root, removed_paths)
         rewrite_license_manifest(extracted_root, platform)
         validate_runtime_packages_manifest_targets(extracted_root)
+        if platform in ("linux-x64", "linux-arm64"):
+            relocate_linux_native_libraries(extracted_root)
         create_archive_from_runtime(extracted_root, archive_path)
 
     return archive_path
