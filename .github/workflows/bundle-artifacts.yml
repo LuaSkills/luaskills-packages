@@ -358,7 +358,9 @@ jobs:
 
           curl -fSL "https://curl.se/download/curl-$CURL_VERSION.tar.gz" | tar xz
           cd "curl-$CURL_VERSION"
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$DEPS_DIR/curl" -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=OFF -DBUILD_CURL_EXE=OFF -DBUILD_TESTING=OFF -DBUILD_LIBCURL_DOCS=OFF -DCURL_USE_OPENSSL=ON -DCURL_ZLIB=ON -DCURL_USE_LIBPSL=OFF -DOPENSSL_ROOT_DIR="$DEPS_DIR/openssl" -DZLIB_ROOT="$DEPS_DIR/zlib"
+          # Keep Homebrew's libssh2 from adding headers for its different OpenSSL major version.
+          # 避免 Homebrew 的 libssh2 引入不同 OpenSSL 主版本的头文件。
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$DEPS_DIR/curl" -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=OFF -DBUILD_CURL_EXE=OFF -DBUILD_TESTING=OFF -DBUILD_LIBCURL_DOCS=OFF -DCURL_USE_OPENSSL=ON -DCURL_USE_LIBSSH2=OFF -DCURL_ZLIB=ON -DCURL_USE_LIBPSL=OFF -DOPENSSL_ROOT_DIR="$DEPS_DIR/openssl" -DZLIB_ROOT="$DEPS_DIR/zlib"
           cmake --build build --parallel "$jobs"
           cmake --install build
           cd ..
